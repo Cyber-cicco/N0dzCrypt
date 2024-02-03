@@ -6,36 +6,39 @@ import (
 	"fr/hijokaidan/config"
 	"fr/hijokaidan/utils"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 	"text/template"
+
+	"github.com/IMQS/options"
 )
 
-type Pom struct {
-    SpringVersion string
-    GroupId string
-    ArtifactId string
-    ProjectName string
-    Description string
-    JavaVersion int
-    JwtVersion string
-    AdditionalProperties []string
-    MainClass string
-    Profiles []string
-}
-
 func CreateNodzCryptApp() {
+
     scanner := bufio.NewScanner(os.Stdin)
     projectProps := config.ProjectProps{}
+    profile := Profile{}
     pom := Pom{}
+    // sqlConnection := SQLConnection{}
 
-    pom.SpringVersion = "3.1.5"
+    pom.SpringVersion = "3.2.2"
     askOrganisationId(&pom, scanner)
     askProjectName(&pom, scanner)
-    projectProps.MainPackage = pom.GroupId + "." + pom.ArtifactId
+    projectProps.MainPackage = utils.GetPackageName(pom.ArtifactId, pom.GroupId)
     askProjectDescription(&pom, scanner)
     askJavaVersion(&pom, scanner)
     pom.JwtVersion = "0.11.5"
+    askConnectionInfos(scanner, &profile)
+
+    dependencies := askDependencies(scanner)
+
+
+
+    createApplicationProperties(dependencies)
+
+    if wantsProfile(scanner) {
+    }
 
     fileContent, err := os.ReadFile("../resources/pom.xml");
     utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
@@ -129,4 +132,45 @@ func askJavaVersion(pom *Pom, scanner *bufio.Scanner) {
         valid = false;
     }
     pom.JavaVersion = input
+}
+
+func wantsProfile(scanner *bufio.Scanner) bool {
+    answer := ""
+    possibleAnswers := []string{
+        "y", "n","Y", "N", "yes", "no", "Yes", "No",
+    }
+    fmt.Print("Do you want to set up a new profile ? (y/n) : ")
+    for slices.Contains(possibleAnswers, answer) {
+        if scanner.Scan() {
+            answer = scanner.Text()
+        }
+    }
+    return answer == "y" || answer == "Y" || answer == "yes" || answer == "Yes"
+}
+
+func askDependencies(scanner *bufio.Scanner) *SQLConnection {
+    con := options.NewConsole()
+	defer con.Close()
+    sqlConnection := SQLConnection{}
+
+	boxes := []string {
+		"mysql",
+		"mariadb",
+		"postgresql",
+		"h2",
+		"oracle",
+	}
+    con.Radio("Chose your database", "", -1, boxes)
+    return &sqlConnection;
+    
+}
+
+func askConnectionInfos(scanner *bufio.Scanner, profile *Profile, ) {
+    fmt.Println("Enter the name of your database : ")
+    if scanner.Scan() {
+    }
+}
+
+func createApplicationProperties(dependencies *config.Dependencies) {
+
 }

@@ -6,7 +6,7 @@ import (
 )
 
 func IsAcceptedCharacters(name string) bool {
-    return regexp.MustCompile(`^[a-zA-Z0-9,\-,_]*$`).MatchString(name)
+    return regexp.MustCompile(`^[a-zA-Z0-9,\.,\-,_]*$`).MatchString(name)
 }
 
 func transformIntoPackageName(name string) string {
@@ -33,7 +33,7 @@ func transformIntoPackageName(name string) string {
     return packageName
 }
 
-func getPackageName(artifactId, groupId string) string {
+func GetPackageName(artifactId, groupId string) string {
     return transformIntoPackageName(groupId) + "." + transformIntoPackageName(artifactId)
 }
 
