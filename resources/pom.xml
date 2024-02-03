@@ -12,11 +12,11 @@
     <artifactId>{{.ArtifactId}}</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>{{.ProjectName}}</name>
-    <description>digi-learning</description>
+    <description>{{.Description}}</description>
     <properties>
         <java.version>{{.JavaVersion}}</java.version>
         <jjwt.version>{{.JwtVersion}}</jjwt.version>
-        {{.AdditionalProperties}}
+        {{if .AdditionalProperties}} {{.AdditionalProperties}} {{end}}
     </properties>
     <dependencies>
         <dependency>
@@ -111,7 +111,7 @@
 
     <profiles>
         <profile>
-        {{.Profiles}}
+        {{if .Profiles}} {{.Profiles}} {{end}}
         </profile>
     </profiles>
 </project>

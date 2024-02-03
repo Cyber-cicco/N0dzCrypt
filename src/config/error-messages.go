@@ -13,4 +13,5 @@ var ERR_UNMARSHAL = "Error in creating an object from JSON"
 var ERR_BAD_CONFIG_PACKAGE = "Error: the package specified in the configuration file does not seem to point to an existing directory."
 var ERR_TEMPLATE_FILE_READ = "Error reading a template file"
 var ERR_CURR_DIR_OPEN = "Error openening current directory"
+var ERR_COULDNT_READ_INPUT = "Could not read user input"
 
