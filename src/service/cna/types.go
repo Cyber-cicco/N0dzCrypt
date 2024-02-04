@@ -64,26 +64,30 @@ type N0dzCryptProject struct {
     AuthenticationService string
     AuthenticationInfos string
     JwtService string
+    
 
     //backend controllers
     LoginController string
     ProfileController string
+    AboutController string
     HomeController string
 
     //backend irrigators
     LayoutIrrigator string
     ProfileIrrigator string
-     
+
+    //backend main class
+    MainClass string
 
     //front end templates
     BaseLayout string
     Headers string
+    NavBar string
     HomePage string
-    LoginPage string
+    //LoginPage string
 
     //front end style
     InputCSS string
-    OutPutCSS string
 
 }
 

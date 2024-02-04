@@ -1,0 +1,20 @@
+<nav class="flex h-fit p-5 bg-gray-900 text-white w-full">
+    <ul class="flex h-fit gap-10">
+        <li><a
+                class="p-5 hover:bg-gradient-to-t from-gray-800 to-gray-600"
+                hx-target="#router-outlet"
+                href="home"
+                hx-swap="innerHTML transition:true"
+                hx-get="home/partial"
+                hx-push-url="home"
+        >Home</a></li>
+        <li><a
+                class="p-5 hover:bg-gradient-to-t from-gray-800 to-gray-600"
+                hx-target="#router-outlet"
+                hx-swap="innerHTML transition:true"
+                href="about"
+                hx-get="about/partial"
+                hx-push-url="about"
+        >About</a></li>
+    </ul>
+</nav>

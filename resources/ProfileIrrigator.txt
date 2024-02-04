@@ -7,10 +7,10 @@ import org.springframework.ui.Model;
 
 @Service
 @RequiredArgsConstructor
-public class LayoutIrrigator {
+public class ProfileIrrigator {
 
-    public void irrigateBaseLayout(Model model, String fragmentAdress) {
-        model.addAttribute("routerOutlet", fragmentAdress);
+    public void irrigateModel(Model model, AuthenticationInfos userInfos, String fragmentAdress) {
+        model.addAttribute("user", userInfos);
     }
 }
 

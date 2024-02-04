@@ -53,7 +53,7 @@ public class LoginController {
                             .getRoles().stream().map(UserRole::getLibelle).collect(Collectors.toList()))
                     .build();
             response.setHeader(HttpHeaders.SET_COOKIE, jwtService.buildJWTCookie(auth.get()));
-            layoutIrrigator.irrigateBaseLayout(model, userInfos, Routes.ADR_HOME);
+            layoutIrrigator.irrigateBaseLayout(model, Routes.ADR_HOME);
             homePageIrrigator.irrigateModel(model, userInfos);
             response.setHeader(HX.REDIRECT, "profile");
             return Routes.ADR_BASE_LAYOUT;

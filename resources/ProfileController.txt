@@ -32,7 +32,7 @@ public class ProfileController {
     public String getProfile(Model model, HttpServletResponse response) throws IOException {
         try {
             AuthenticationInfos userInfos = authenticationService.getAuthInfos();
-            layoutIrrigator.irrigateBaseLayout(model, userInfos, Routes.ADR_PROFILE);
+            layoutIrrigator.irrigateBaseLayout(model, Routes.ADR_PROFILE);
             profileIrrigator.irrigateModel(model, userInfos);
             return Routes.ADR_BASE_LAYOUT;
         } catch (Exception e){
