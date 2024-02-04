@@ -110,8 +110,10 @@
     </build>
 
     <profiles>
-        <profile>
-        {{if .Profiles}} {{.Profiles}} {{end}}
-        </profile>
+    {{if .Profiles}} 
+        {{range .Profiles}} 
+{{.}}
+        {{end}}
+    {{end}}
     </profiles>
 </project>

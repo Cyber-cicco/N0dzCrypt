@@ -2,7 +2,7 @@ package service
 
 type SQLConnection struct {
     Url string
-    driver string
+    Driver string
 }
 
 type Pom struct {
@@ -18,8 +18,15 @@ type Pom struct {
     Profiles []string
 }
 
-type Profile struct {
+type DBInfos struct {
     DBUrl string
     DBUser string
     DBPassword string
+    DBDriver string
+}
+
+type Profile struct {
+    ProfileName string
+    ActiveByDefault bool
+    DBInfos DBInfos
 }

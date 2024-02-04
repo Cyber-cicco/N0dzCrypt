@@ -1,0 +1,16 @@
+        <profile>
+            <id>{{.ProfileName}}</id>
+            <activation>
+                <activeByDefault>{{.ActiveByDefault}}</activeByDefault>
+                <property>
+                    <name>env.MAVEN_PROFILE</name>
+                    <value>{{.ProfileName}}</value>
+                </property>
+            </activation>
+            <properties>
+                <jdbc.driver>{{.DBInfos.DBDriver}}</jdbc.driver>
+                <jdbc.url>{{.DBInfos.DBUrl}}</jdbc.url>
+                <jdbc.user>{{.DBInfos.DBUser}}</jdbc.user>
+                <jdbc.pass>{{.DBInfos.DBPassword}}</jdbc.pass>
+            </properties>
+        </profile>

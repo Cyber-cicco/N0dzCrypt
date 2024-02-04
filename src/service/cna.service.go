@@ -2,25 +2,24 @@ package service
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"fr/hijokaidan/config"
 	"fr/hijokaidan/utils"
 	"os"
-	"slices"
 	"strconv"
 	"strings"
 	"text/template"
 
 	"github.com/IMQS/options"
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 func CreateNodzCryptApp() {
 
     scanner := bufio.NewScanner(os.Stdin)
     projectProps := config.ProjectProps{}
-    profile := Profile{}
     pom := Pom{}
-    // sqlConnection := SQLConnection{}
 
     pom.SpringVersion = "3.2.2"
     askOrganisationId(&pom, scanner)
@@ -29,16 +28,13 @@ func CreateNodzCryptApp() {
     askProjectDescription(&pom, scanner)
     askJavaVersion(&pom, scanner)
     pom.JwtVersion = "0.11.5"
-    askConnectionInfos(scanner, &profile)
+    sqlConnection := askDependencies(scanner)
+    dbInfos := askConnectionInfos(scanner, sqlConnection)
+    pom.MainClass = utils.GetApplicationNameFromArtifactId(pom.ArtifactId)
 
-    dependencies := askDependencies(scanner)
+    pom.Profiles = getProfile(&pom, dbInfos)
 
-
-
-    createApplicationProperties(dependencies)
-
-    if wantsProfile(scanner) {
-    }
+    //createApplicationProperties(sqlConnection)
 
     fileContent, err := os.ReadFile("../resources/pom.xml");
     utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
@@ -46,6 +42,19 @@ func CreateNodzCryptApp() {
     if err != nil { panic(err) }
     err = tmpl.Execute(os.Stdout, pom)
     if err != nil { panic(err) }
+}
+
+func getProfile(pom *Pom, dbInfos *DBInfos, ) []string {
+    profile := Profile{}
+    profile.ActiveByDefault = true
+    profile.DBInfos = *dbInfos
+    profile.ProfileName = "dev"
+    var tplBytes bytes.Buffer
+    profileFileTemplate, err := os.ReadFile("../resources/profile.xml") 
+    utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
+    profileTmpl, err := template.New("test").Parse(string(profileFileTemplate))
+    err = profileTmpl.Execute(&tplBytes, profile)
+    return []string{string(tplBytes.String())}
 }
 
 func askOrganisationId(pom *Pom, scanner *bufio.Scanner) {
@@ -134,43 +143,65 @@ func askJavaVersion(pom *Pom, scanner *bufio.Scanner) {
     pom.JavaVersion = input
 }
 
-func wantsProfile(scanner *bufio.Scanner) bool {
-    answer := ""
-    possibleAnswers := []string{
-        "y", "n","Y", "N", "yes", "no", "Yes", "No",
-    }
-    fmt.Print("Do you want to set up a new profile ? (y/n) : ")
-    for slices.Contains(possibleAnswers, answer) {
-        if scanner.Scan() {
-            answer = scanner.Text()
-        }
-    }
-    return answer == "y" || answer == "Y" || answer == "yes" || answer == "Yes"
-}
-
 func askDependencies(scanner *bufio.Scanner) *SQLConnection {
     con := options.NewConsole()
 	defer con.Close()
-    sqlConnection := SQLConnection{}
 
 	boxes := []string {
 		"mysql",
 		"mariadb",
 		"postgresql",
-		"h2",
 		"oracle",
 	}
-    con.Radio("Chose your database", "", -1, boxes)
-    return &sqlConnection;
-    
-}
+    infos := con.Radio("Chose your database", "", -1, boxes)
 
-func askConnectionInfos(scanner *bufio.Scanner, profile *Profile, ) {
-    fmt.Println("Enter the name of your database : ")
-    if scanner.Scan() {
+    switch infos {
+    case 0 : {
+        return &SQLConnection{
+            Url: "jdbc:mysql://localhost:3306/",
+            Driver: "com.mysql.cj.jdbc.Driver",
+        }
+    }
+    case 1 : {
+        return &SQLConnection{
+            Url: "jdbc:mariadb://localhost:3306/",
+            Driver: "org.mariadb.jdbc.Driver",
+        }
+    }
+    case 2 : {
+        return &SQLConnection{
+            Url: "jdbc:postgresql://localhost:5432/",
+            Driver: "org.postgresql.Driver",
+        }
+    }
+    default : {
+        return &SQLConnection{
+            Url: "jdbc:oracle:thin:@localhost:1521:",
+            Driver: "oracle.jdbc.OracleDriver",
+        }
+    }
     }
 }
 
-func createApplicationProperties(dependencies *config.Dependencies) {
+func askConnectionInfos(scanner *bufio.Scanner, sqlConnection *SQLConnection) *DBInfos {
+    dbInfos := DBInfos{}
+    dbInfos.DBDriver = sqlConnection.Driver
+    fmt.Println("Enter the name of your database : ")
+    if scanner.Scan() {
+        sqlConnection.Url += scanner.Text()
+        dbInfos.DBUrl = sqlConnection.Url
+    } 
+    fmt.Println("Enter the username of the account that will access the database : ")
+    if scanner.Scan() {
+        dbInfos.DBUser = scanner.Text()
+    }
+    fmt.Println("Enter the password of the account that will access the database : ")
+    password, err := terminal.ReadPassword(0)
+    utils.HandleTechnicalError(err, "Can't read password")
+    dbInfos.DBPassword = string(password)
+    return &dbInfos
+}
+
+func createApplicationProperties(dependencies *SQLConnection) {
 
 }

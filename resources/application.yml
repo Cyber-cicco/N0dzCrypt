@@ -1,0 +1,64 @@
+spring:
+    profiles:
+        active: dev
+    datasource:
+        url: '@jdbc.url@'
+        username: '@jdbc.user@'
+        password: '@jdbc.pass@'
+        driver-class-name: '@jdbc.driver@'
+    jpa:
+        database: {{.DBJpa}}
+        generate-ddl: true
+    thymeleaf: # Thymeleaf
+        cache: false
+        mode: HTML
+        encoding: UTF-8
+        prefix: file:src/main/resources/templates/
+    web:
+        resources:
+            static-locations: file:src/main/resources/static/
+            cache:
+                period: 0
+jwt:
+    cookie: "AUTH_TOKEN"
+    expires_in: 864000
+    secret: "{{.JWTSecret}}"
+logging:
+    level:
+      org.springframework: WARN
+      org.hibernate.type.descriptor: trace
+      org.hibernate.sql: debug
+
+---
+
+spring:
+    profiles:
+        active: prod
+    datasource:
+        url: '@jdbc.url@'
+        username: '@jdbc.user@'
+        password: '@jdbc.pass@'
+        driver-class-name: '@jdbc.driver@'
+    jpa:
+        database: {{.DBJpa}}
+        generate-ddl: false
+    thymeleaf: # Thymeleaf
+        cache: true
+        mode: HTML
+        encoding: UTF-8
+        prefix: classpath:/templates/
+        suffix: .html
+    web:
+        resources:
+            static-locations: classpath:/static/
+            cache:
+                period: 3600
+jwt:
+    cookie: "AUTH-TOKEN"
+    expires_in: 864000
+    secret: "{{.JWTSecret}}"
+logging:
+    level:
+      org.springframework: WARN
+      org.hibernate.type.descriptor: warn
+      org.hibernate.sql: error
