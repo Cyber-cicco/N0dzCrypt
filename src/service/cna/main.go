@@ -1,4 +1,4 @@
-package service
+package cna
 
 import (
 	"bufio"
@@ -12,6 +12,7 @@ import (
 	"text/template"
 
 	"github.com/IMQS/options"
+	"github.com/google/uuid"
 	"golang.org/x/crypto/ssh/terminal"
 )
 
@@ -34,7 +35,7 @@ func CreateNodzCryptApp() {
 
     pom.Profiles = getProfile(&pom, dbInfos)
 
-    //createApplicationProperties(sqlConnection)
+    createApplicationProperties()
 
     fileContent, err := os.ReadFile("../resources/pom.xml");
     utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
@@ -202,6 +203,11 @@ func askConnectionInfos(scanner *bufio.Scanner, sqlConnection *SQLConnection) *D
     return &dbInfos
 }
 
-func createApplicationProperties(dependencies *SQLConnection) {
+func getJwtSecret() string {
+	newUUID := uuid.New()
+	return  newUUID.String()
+}
 
+func createApplicationProperties(){
+    properties := ApplicationProperties{}
 }

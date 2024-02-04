@@ -1,0 +1,9 @@
+package {{.BasePackage}}.repository;
+
+import {{.BasePackage}}.entities.UserRole;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UtilisateurRepository extends JpaRepository<UserRole, Long>  {
+
+}
+

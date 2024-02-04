@@ -7,7 +7,6 @@ spring:
         password: '@jdbc.pass@'
         driver-class-name: '@jdbc.driver@'
     jpa:
-        database: {{.DBJpa}}
         generate-ddl: true
     thymeleaf: # Thymeleaf
         cache: false
@@ -40,7 +39,6 @@ spring:
         password: '@jdbc.pass@'
         driver-class-name: '@jdbc.driver@'
     jpa:
-        database: {{.DBJpa}}
         generate-ddl: false
     thymeleaf: # Thymeleaf
         cache: true

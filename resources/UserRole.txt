@@ -1,0 +1,41 @@
+package {{.BasePackage}}.entities;
+
+import f{{.BasePackage}}.entities.enums.TypeRole;
+import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+
+/**
+ * @author n0dzCrypt
+ */
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+public class UserRole implements GrantedAuthority {
+
+	@Id
+	private Long id;
+
+	@Enumerated
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private TypeRole type;
+
+	@ManyToMany
+	@JoinTable(name = "user_role"
+        joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
+    )
+	private List<BaseUser> users;
+
+	/** Libellé */
+	private String libelle;
+
+	@Override
+	public String getAuthority() {
+		return type.name();
+	}
+}
+
