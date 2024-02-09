@@ -23,6 +23,7 @@ type FileTree struct {
     Utils string
     HX string
     Entities string
+    EntityEnum string
     Templates string
     Validators string
     Json string
@@ -31,6 +32,7 @@ type FileTree struct {
     JSStatic string
     Img string
     Layouts string
+    Resources string
     Components string
     JSTemplates string
     PagesFront string
@@ -50,26 +52,28 @@ func InitConfig(mainPackage string) *FileTree {
     return &FileTree{
         Root: root,
         JavaRoot: javaRoot,
-        PagesBack: javaRoot + "pages/",
-        Irrigator: javaRoot + "pages/irrigator/",
+        PagesBack: javaRoot + "page/",
+        Irrigator: javaRoot + "page/irrigator/",
         Service: javaRoot + "service/",
         Security: javaRoot + "security/",
-        SecurityService: javaDir + "security/service/",
-        SecurityConfig: javaDir + "security/config/",
+        SecurityService: javaRoot + "security/service/",
+        SecurityConfig: javaRoot + "security/config/",
         Repository: javaRoot + "repository/",
         Utils: javaRoot + "util/",
         HX: javaRoot + "util/hx/",
         Entities: javaRoot + "entity/",
+        EntityEnum: javaRoot + "entity/enums/",
         Validators: javaRoot + "validator/",
         Json: javaRoot + "json/",
         Templates: templates,
+        Resources: resources,
         Static: static,
         JSStatic: static + "script/",
         Img: static + "script/",
         JSTemplates: templates + "script/",
         Layouts: templates + "layout/",
         Components: templates + "components/",
-        PagesFront: templates + "pages/",
+        PagesFront: templates + "page/",
         StyleStatic: static + "style/",
         StyleTemplates: templates + "style/",
         Test: root + "src/test/java/",

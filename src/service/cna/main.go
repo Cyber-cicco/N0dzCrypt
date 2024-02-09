@@ -37,9 +37,9 @@ func CreateNodzCryptApp() {
     fileTree := config.InitConfig(projectProps.MainPackage)
     createDirectories(fileTree)
     createPom(&pom, fileTree)
-    createFiles(&pom, fileTree)
+    createBaseFiles(&pom, fileTree, projectProps.MainPackage)
 
-    createApplicationProperties()
+    createApplicationProperties(fileTree)
 
 }
 
@@ -206,6 +206,20 @@ func getJwtSecret() string {
 	return  newUUID.String()
 }
 
-func createApplicationProperties(){
-    //properties := ApplicationProperties{}
+func createApplicationProperties(fileTree *config.FileTree){
+    properties := ApplicationProperties{
+        JWTSecret: utils.RandStringBytes(20),
+    }
+    var tplBytes bytes.Buffer
+    fileContent, err := os.ReadFile(config.RESOURCE_FOLDER + "application.yml");
+    utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
+    tmpl, err := template.New("application.yml").Parse(string(fileContent))
+    if err != nil { panic(err) }
+    err = tmpl.Execute(&tplBytes, properties)
+    f, err := os.OpenFile(fileTree.Resources + "application.yml", os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
+    defer f.Close()
+    if err != nil {
+        panic(err)
+    }
+    f.Write(tplBytes.Bytes())
 }

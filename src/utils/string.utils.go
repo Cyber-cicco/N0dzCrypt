@@ -1,10 +1,21 @@
 package utils
 
 import (
+	"math/rand"
 	"regexp"
 	"strings"
 	"unicode"
 )
+
+const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+func RandStringBytes(n int) string {
+    b := make([]byte, n)
+    for i := range b {
+        b[i] = letterBytes[rand.Intn(len(letterBytes))]
+    }
+    return string(b)
+}
 
 func IsAcceptedCharacters(name string) bool {
     return regexp.MustCompile(`^[a-zA-Z0-9,\.,\-,_]*$`).MatchString(name)
