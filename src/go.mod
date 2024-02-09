@@ -1,4 +1,4 @@
-module fr/hijokaidan
+module fr/nzc
 
 go 1.20
 

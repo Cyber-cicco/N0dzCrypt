@@ -43,9 +43,10 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(mvc.pattern("login" )).permitAll()
                         .requestMatchers(mvc.pattern("/" )).permitAll()
+                        .requestMatchers(mvc.pattern("/about/**" )).permitAll()
                         .requestMatchers(mvc.pattern("img/**")).permitAll()
                         .requestMatchers(mvc.pattern("js/**")).permitAll()
-                        .requestMatchers(mvc.pattern("styles/**")).permitAll()
+                        .requestMatchers(mvc.pattern("style/**")).permitAll()
                         .requestMatchers(mvc.pattern("home/**")).permitAll()
                         .anyRequest().authenticated()
                 )

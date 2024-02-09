@@ -3,6 +3,7 @@ package cna
 type SQLConnection struct {
     Url string
     Driver string
+    MavenDependencie string
 }
 
 type Pom struct {
@@ -16,6 +17,7 @@ type Pom struct {
     AdditionalProperties []string
     MainClass string
     Profiles []string
+    DBDependencie string
 }
 
 type DBInfos struct {

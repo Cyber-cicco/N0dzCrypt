@@ -1,8 +1,13 @@
 package config
 
-import "fr/hijokaidan/utils"
+import (
+	"encoding/json"
+	"fr/nzc/utils"
+	"os"
+)
 
 var RESOURCE_FOLDER = "../resources/"
+var CONFIG_FILE = "n0dzcrypt.json"
 
 type ProjectProps struct {
     MainPackage string
@@ -11,46 +16,47 @@ type ProjectProps struct {
 
 
 type FileTree struct {
-    Root string
-    JavaRoot string
-    PagesBack string
-    Irrigator string
-    Service string
-    Security string
-    SecurityService string
-    SecurityConfig string
-    Repository string
-    Utils string
-    HX string
-    Entities string
-    EntityEnum string
-    Templates string
-    Validators string
-    Json string
-    Static string
-    StyleStatic string
-    JSStatic string
-    Img string
-    Layouts string
-    Resources string
-    Components string
-    JSTemplates string
-    PagesFront string
-    StyleTemplates string
-    Test string
-    TestResources string
+    Root string `json:"root"`
+    JavaRoot string `json:"javaroot"`
+    PagesBack string `json:"pagesback"`
+    Irrigator string`json:"irrigator"`
+    SVG string`json:"svg"`
+    Service string`json:"service"`
+    Security string`json:"security"`
+    SecurityService string`json:"securityservice"`
+    SecurityConfig string`json:"securityconfig"`
+    Repository string`json:"repository"`
+    Utils string`json:"utils"`
+    HX string`json:"hx"`
+    Entities string`json:"entities"`
+    EntityEnum string`json:"entityenum"`
+    Templates string`json:"templates"`
+    Validators string`json:"validators"`
+    Json string`json:"json"`
+    Static string`json:"static"`
+    StyleStatic string`json:"stylestatic"`
+    JSStatic string`json:"jsstatic"`
+    Img string`json:"img"`
+    Layouts string`json:"layouts"`
+    Resources string`json:"resources"`
+    Components string`json:"components"`
+    JSTemplates string`json:"jstemplates"`
+    PagesFront string`json:"pagesfront"`
+    StyleTemplates string`json:"styletemplates"`
+    Test string`json:"test"`
+    TestResources string`json:"testresources"`
 }
 
-func InitConfig(mainPackage string) *FileTree {
-    root := "../../TestNSC/"
+func CreateConfig(mainPackage string) *FileTree {
+    root := "./"
     javaDir := "src/main/java/" + utils.GetDirNameFromPackage(mainPackage)
     javaRoot := root + javaDir
     resources := root + "src/main/resources/"
     templates := resources + "templates/"
     static := resources + "static/"
 
-    return &FileTree{
-        Root: root,
+    fileTree := &FileTree{
+        Root: root ,
         JavaRoot: javaRoot,
         PagesBack: javaRoot + "page/",
         Irrigator: javaRoot + "page/irrigator/",
@@ -70,6 +76,7 @@ func InitConfig(mainPackage string) *FileTree {
         Static: static,
         JSStatic: static + "script/",
         Img: static + "script/",
+        SVG: templates + "svg/",
         JSTemplates: templates + "script/",
         Layouts: templates + "layout/",
         Components: templates + "components/",
@@ -79,4 +86,13 @@ func InitConfig(mainPackage string) *FileTree {
         Test: root + "src/test/java/",
         TestResources: root + "src/test/resources/",
     }
+    configTree, err := json.Marshal(fileTree)
+    utils.HandleTechnicalError(err, ERR_MARSHARL)
+    f, err := os.OpenFile(CONFIG_FILE, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
+    defer f.Close()
+    if err != nil {
+        panic(err)
+    }
+    f.Write(configTree)
+    return fileTree
 }

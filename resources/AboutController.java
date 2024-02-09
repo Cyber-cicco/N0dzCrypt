@@ -13,13 +13,14 @@ public class AboutController {
 
     @GetMapping
     public String getHomePage(Model model){
-        model.addAttribute("routerOutlet", "pages/about");
-        return "layouts/base";
+        model.addAttribute("routerOutlet", "page/about/about");
+        return "layout/base";
     }
     @GetMapping("/partial")
     public String getHomePagePartial(Model model){
         model.addAttribute("routerOutlet", "pages/about");
-        return "pages/about";
+        return "page/about/about";
     }
+
 }
 

@@ -2,8 +2,8 @@ package cna
 
 import (
 	"bytes"
-	"fr/hijokaidan/config"
-	"fr/hijokaidan/utils"
+	"fr/nzc/config"
+	"fr/nzc/utils"
 	"os"
 	"text/template"
 )
@@ -43,6 +43,9 @@ func createBaseFiles(pom *Pom, fileTree *config.FileTree, mainPackage string) {
         {fileName: "tailwind.config.js", adress: fileTree.Templates},
         {fileName: "home.html", adress: fileTree.PagesFront + "home/"},
         {fileName: "about.html", adress: fileTree.PagesFront + "about/"},
+        {fileName: "input.css", adress: fileTree.StyleTemplates},
+        {fileName: "output.css", adress: fileTree.StyleStatic},
+        {fileName: "n0dzCrypt.html", adress: fileTree.SVG},
         {fileName: "htmx.min.js", adress: fileTree.JSTemplates},
     }
     for _, fileToAdress := range files {
