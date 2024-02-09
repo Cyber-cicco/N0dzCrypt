@@ -36,6 +36,8 @@ func CreateNodzCryptApp() {
     pom.Profiles = getProfile(&pom, dbInfos)
     fileTree := config.InitConfig(projectProps.MainPackage)
     createDirectories(fileTree)
+    createPom(&pom, fileTree)
+    createFiles(&pom, fileTree)
 
     createApplicationProperties()
 
