@@ -4,8 +4,8 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"fr/hijokaidan/config"
-	"fr/hijokaidan/utils"
+	"fr/nzc/config"
+	"fr/nzc/utils"
 	"os"
 	"strconv"
 	"strings"
@@ -30,11 +30,12 @@ func CreateNodzCryptApp() {
     askJavaVersion(&pom, scanner)
     pom.JwtVersion = "0.11.5"
     sqlConnection := askDependencies(scanner)
+    pom.DBDependencie = sqlConnection.MavenDependencie
     dbInfos := askConnectionInfos(scanner, sqlConnection)
     pom.MainClass = utils.GetApplicationNameFromArtifactId(pom.ArtifactId)
 
     pom.Profiles = getProfile(&pom, dbInfos)
-    fileTree := config.InitConfig(projectProps.MainPackage)
+    fileTree := config.CreateConfig(projectProps.MainPackage)
     createDirectories(fileTree)
     createPom(&pom, fileTree)
     createBaseFiles(&pom, fileTree, projectProps.MainPackage)
@@ -150,7 +151,6 @@ func askDependencies(scanner *bufio.Scanner) *SQLConnection {
 		"mysql",
 		"mariadb",
 		"postgresql",
-		"oracle",
 	}
     infos := con.Radio("Chose your database", "", -1, boxes)
 
@@ -159,24 +159,46 @@ func askDependencies(scanner *bufio.Scanner) *SQLConnection {
         return &SQLConnection{
             Url: "jdbc:mysql://localhost:3306/",
             Driver: "com.mysql.cj.jdbc.Driver",
+            MavenDependencie: `
+
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version>
+        </dependency>
+
+            `,
         }
     }
     case 1 : {
         return &SQLConnection{
             Url: "jdbc:mariadb://localhost:3306/",
             Driver: "org.mariadb.jdbc.Driver",
-        }
-    }
-    case 2 : {
-        return &SQLConnection{
-            Url: "jdbc:postgresql://localhost:5432/",
-            Driver: "org.postgresql.Driver",
+            MavenDependencie: `
+        <!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+
+            `,
         }
     }
     default : {
         return &SQLConnection{
-            Url: "jdbc:oracle:thin:@localhost:1521:",
-            Driver: "oracle.jdbc.OracleDriver",
+            Url: "jdbc:postgresql://localhost:5432/",
+            Driver: "org.postgresql.Driver",
+            MavenDependencie: `
+        <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.7.1</version>
+        </dependency>
+
+            `,
         }
     }
     }

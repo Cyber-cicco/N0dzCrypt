@@ -2,8 +2,8 @@ package cna
 
 import (
 	"bytes"
-	"fr/hijokaidan/config"
-	"fr/hijokaidan/utils"
+	"fr/nzc/config"
+	"fr/nzc/utils"
 	"os"
 	"text/template"
 )

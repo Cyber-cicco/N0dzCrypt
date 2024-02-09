@@ -2,17 +2,11 @@
 <html lang="fr" class="h-full w-full">
 <head>
     <th:block th:replace="layout/headers"></th:block>
-    <title>{{.ApplicationName}}</title>
+    <title>N0dzCrypt</title>
 </head>
 <body id="root" class="flex flex-col w-full h-screen">
-    <div id="loading" class="z-50 hidden fixed top-0 left-0 w-screen h-screen bg-opacity-40 bg-lightAccent">
-        <div 
-            th:insert="~{svg/spinner}"
-            class="fixed top-[50%] z-50 translate-x-[-100px] translate-y-[-100px] left-[50%]"
-            ></div>
-    </div>
     <th:block th:replace="~{components/navbar}"></th:block>
-    <main id="router-outlet" class="w-full bg-secondary">
+    <main id="router-outlet" class="w-full h-full bg-secondary">
         <th:block th:replace="${routerOutlet}"></th:block>
     </main>
 </body>

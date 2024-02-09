@@ -2,8 +2,8 @@ package cna
 
 import (
 	"fmt"
-	"fr/hijokaidan/config"
-	"fr/hijokaidan/utils"
+	"fr/nzc/config"
+	"fr/nzc/utils"
 	"os"
 )
 
@@ -29,6 +29,7 @@ func createDirectories(fileTree *config.FileTree) {
         fileTree.StyleTemplates,
         fileTree.JSStatic,
         fileTree.JSTemplates,
+        fileTree.SVG,
         fileTree.Test,
         fileTree.TestResources,
         fileTree.Layouts,

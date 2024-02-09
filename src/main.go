@@ -1,6 +1,6 @@
 package main
 
-import "fr/hijokaidan/cmd"
+import "fr/nzc/cmd"
 
 func main() {
     cmd.Execute();

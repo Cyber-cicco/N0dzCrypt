@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"fr/hijokaidan/service/cna"
+	"fr/nzc/service/cna"
 
 	"github.com/spf13/cobra"
 )
