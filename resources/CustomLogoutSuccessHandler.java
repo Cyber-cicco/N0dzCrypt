@@ -1,6 +1,6 @@
 package {{.BasePackage}}.security.config;
 
-import {{.BasePackage}}.utils.hx.HX;
+import {{.BasePackage}}.util.hx.HX;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

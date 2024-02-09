@@ -11,7 +11,7 @@ import lombok.Getter;
 public enum RoleType {
 
 	ROLE_USER("User"),
-	ROLE_ADMIN("Administrator")
+	ROLE_ADMIN("Administrator");
 
     private String name;
 

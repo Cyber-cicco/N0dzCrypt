@@ -2,7 +2,7 @@ package {{.BasePackage}}.security.config;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.diginamic.digilearning.security.service.JwtService;
+import {{.BasePackage}}.security.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

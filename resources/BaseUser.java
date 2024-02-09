@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class BaseUser {
 
@@ -22,7 +23,7 @@ public class BaseUser {
 	private Long id;
 
 	@ManyToMany
-	@JoinTable(name = "user_role"
+	@JoinTable(name = "user_role",
         joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )

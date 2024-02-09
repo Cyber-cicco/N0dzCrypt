@@ -2,8 +2,8 @@ package {{.BasePackage}}.security.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import {{.BasePackage}}.entities.UserRole;
-import {{.BasePackage}}.entities.BaseUser;
+import {{.BasePackage}}.entity.UserRole;
+import {{.BasePackage}}.entity.BaseUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Configuration
 @Getter
@@ -54,16 +55,17 @@ public class JwtService {
      * @param user the user
      * @return the JWT
      */
-    public String buildJWTCookie(Utilisateur user) {
+    public String buildJWTCookie(BaseUser user) {
         ObjectMapper objectMapper = new ObjectMapper();
         String jetonJWT = null;
         try {
             jetonJWT = Jwts.builder()
                     .setSubject(user.getEmail())
-                    .addClaims(Map.of("role",  objectMapper.writeValueAsString(user.getRoles().stream()
-                            .map(Role::getLibelle)
-                            .toList())
+                            .addClaims(Map.of("role",  objectMapper.writeValueAsString(user.getUserRoles().stream()
+                            .map(UserRole::getLibelle)
+                            .collect(Collectors.toList()))
                     ))
+
                     .addClaims(Map.of("id", user.getId()))
                     .setExpiration(new Date(System.currentTimeMillis() + getExpireIn() * 1000))
                     .signWith(

@@ -1,6 +1,6 @@
 package {{.BasePackage}}.security;
 
-import {{.BasePackage}}.entities.enums.RoleType;
+import {{.BasePackage}}.entity.enums.RoleType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,11 +20,11 @@ public class AuthenticationInfos {
     private Long id;
 
     public boolean isBaseUser(){
-        return roles.contains(RoleType.ROLE_USER.getLibelle());
+        return roles.contains(RoleType.ROLE_USER.getName());
     }
 
     public boolean isAdministrateur(){
-        return roles.contains(RoleType.ROLE_ADMIN.getLibelle());
+        return roles.contains(RoleType.ROLE_ADMIN.getName());
     }
 }
 

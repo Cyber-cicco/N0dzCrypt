@@ -1,8 +1,8 @@
 package {{.BasePackage}}.security.service;
 
-import {{.BasePackage}}.entities.enums.RoleType;
+import {{.BasePackage}}.entity.enums.RoleType;
 import {{.BasePackage}}.security.AuthenticationInfos;
-import {{.BasePackage}}.utils.hx.HX;
+import {{.BasePackage}}.util.hx.HX;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,13 +35,13 @@ public class AuthenticationService {
                 .roles(SecurityContextHolder.getContext().getAuthentication().getAuthorities()
                         .stream()
                         .map(Object::toString)
-                        .toList())
+                        .collect(Collectors.toList()))
                 .id((Long) SecurityContextHolder.getContext().getAuthentication().getCredentials())
                 .build();
     }
 
     public void mustBeOfRole(List<String> currentRoles, RoleType expectedRole, HttpServletResponse response) {
-        if(!currentRoles.contains(expectedRole.getLibelle())) {
+        if(!currentRoles.contains(expectedRole.getName())) {
             try {
                 response.setHeader(HX.RETARGET, "html");
                 response.sendRedirect("/login");
@@ -53,8 +54,8 @@ public class AuthenticationService {
     public void rolesMustMatchOne(List<String> currentRoles, List<RoleType> acceptedRoles, HttpServletResponse response) {
         if(Collections.disjoint(acceptedRoles
                 .stream()
-                .map(RoleType::getLibelle)
-                .toList(), currentRoles)){
+                .map(RoleType::getName)
+                .collect(Collectors.toList()), currentRoles)){
             try {
                 response.setHeader(HX.RETARGET, "html");
                 response.sendRedirect("/login");

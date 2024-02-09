@@ -1,9 +1,11 @@
 package {{.BasePackage}}.entity;
 
-import f{{.BasePackage}}.entities.enums.TypeRole;
+import {{.BasePackage}}.entity.enums.RoleType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+
+import java.util.List;
 
 /**
  * @author n0dzCrypt
@@ -17,14 +19,14 @@ import org.springframework.security.core.GrantedAuthority;
 public class UserRole implements GrantedAuthority {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Enumerated
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private TypeRole type;
+	private RoleType type;
 
 	@ManyToMany
-	@JoinTable(name = "user_role"
+	@JoinTable(name = "user_role",
         joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
     )
