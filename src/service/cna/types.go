@@ -94,3 +94,4 @@ type N0dzCryptProject struct {
 type JavaFile struct {
     BasePackage string
 }
+

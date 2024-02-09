@@ -2,6 +2,7 @@ package utils
 
 import (
 	"regexp"
+	"strings"
 	"unicode"
 )
 
@@ -58,4 +59,8 @@ func GetApplicationNameFromArtifactId(artifactId string) string {
             applicationName += artifactId[posPrevSeparator:]
     }
     return string(unicode.ToUpper(rune(applicationName[0]))) +  applicationName[1:] + "Application"
+}
+
+func GetDirNameFromPackage(p string) string {
+    return strings.ReplaceAll(p, ".", "/") + "/"
 }

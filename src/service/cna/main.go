@@ -34,15 +34,11 @@ func CreateNodzCryptApp() {
     pom.MainClass = utils.GetApplicationNameFromArtifactId(pom.ArtifactId)
 
     pom.Profiles = getProfile(&pom, dbInfos)
+    fileTree := config.InitConfig(projectProps.MainPackage)
+    createDirectories(fileTree)
 
     createApplicationProperties()
 
-    fileContent, err := os.ReadFile("../resources/pom.xml");
-    utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
-    tmpl, err := template.New("test").Parse(string(fileContent))
-    if err != nil { panic(err) }
-    err = tmpl.Execute(os.Stdout, pom)
-    if err != nil { panic(err) }
 }
 
 func getProfile(pom *Pom, dbInfos *DBInfos, ) []string {
@@ -209,5 +205,5 @@ func getJwtSecret() string {
 }
 
 func createApplicationProperties(){
-    properties := ApplicationProperties{}
+    //properties := ApplicationProperties{}
 }

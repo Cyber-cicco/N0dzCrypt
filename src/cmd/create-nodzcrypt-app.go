@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"fr/hijokaidan/service"
+	"fr/hijokaidan/service/cna"
 
 	"github.com/spf13/cobra"
 )
@@ -17,7 +17,7 @@ var cnsa = &cobra.Command{
   `,
 
 	Run: func(cmd *cobra.Command, args []string) {
-        service.CreateNodzCryptApp()
+        cna.CreateNodzCryptApp()
     },
 }
 

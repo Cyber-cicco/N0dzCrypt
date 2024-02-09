@@ -1,4 +1,4 @@
-package {{.BasePackage}}.entities;
+package {{.BasePackage}}.entity;
 
 import f{{.BasePackage}}.entities.enums.TypeRole;
 import jakarta.persistence.*;

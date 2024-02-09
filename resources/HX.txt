@@ -1,4 +1,4 @@
-package {{.BasePackage}}.utils.hx;
+package {{.BasePackage}}.util.hx;
 
 /**
  * Collection of Reponse headers from HTMX

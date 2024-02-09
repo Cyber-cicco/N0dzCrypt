@@ -1,4 +1,4 @@
-package {{.BasePackage}}.entities.enums;
+package {{.BasePackage}}.entity.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
