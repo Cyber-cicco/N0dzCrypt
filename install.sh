@@ -1,4 +1,3 @@
 #!/bin/bash
 
-mv -r resources/ ~/go/bin/resources/
-go install
+cp -r resources/ ~/go/bin/resources/ && cd src && go install

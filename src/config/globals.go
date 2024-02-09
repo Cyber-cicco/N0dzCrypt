@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-var RESOURCE_FOLDER = "../resources/"
+var RESOURCE_FOLDER = "~/go/bin/resources/"
 var CONFIG_FILE = "n0dzcrypt.json"
 
 type ProjectProps struct {

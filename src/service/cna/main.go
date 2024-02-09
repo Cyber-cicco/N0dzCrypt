@@ -50,7 +50,7 @@ func getProfile(pom *Pom, dbInfos *DBInfos, ) []string {
     profile.DBInfos = *dbInfos
     profile.ProfileName = "dev"
     var tplBytes bytes.Buffer
-    profileFileTemplate, err := os.ReadFile("../resources/profile.xml") 
+    profileFileTemplate, err := os.ReadFile(config.RESOURCE_FOLDER + "profile.xml") 
     utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
     profileTmpl, err := template.New("test").Parse(string(profileFileTemplate))
     err = profileTmpl.Execute(&tplBytes, profile)
