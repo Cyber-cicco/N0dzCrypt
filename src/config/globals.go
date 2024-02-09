@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-var RESOURCE_FOLDER = "~/go/bin/resources/"
+var RESOURCE_FOLDER = os.Getenv("GOPATH") + "/bin/resources/"
 var CONFIG_FILE = "n0dzcrypt.json"
 
 type ProjectProps struct {
