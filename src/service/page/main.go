@@ -14,6 +14,7 @@ func CreatePage(args []string) {
     conf, err := daos.GetConfigFile(currDir)
     utils.HandleUsageError(err, config.ERR_COULDNT_FIND_CONFIG)
     pageHTML, err := os.ReadFile(config.RESOURCE_FOLDER + "n0dzcrypt.page.html")
+    utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
     for _, arg := range args {
         javaInfos := &JavaClassInfos{
             BasePackage: conf.BasePackage,
@@ -48,5 +49,22 @@ func writeIrrigator(arg string, conf *config.FileTree, javaInfos *JavaClassInfos
 }
 
 func appendRoute(arg string, conf *config.FileTree, javaInfos *JavaClassInfos) {
-
+    pageContent := daos.GetTemplBytes[JavaClassInfos](arg, config.SINGLE_ROUTE, *javaInfos)
+    routesPath := conf.CurrentDirectory + conf.PagesBack + "Routes.java"
+    routesBytes, err := os.ReadFile(routesPath)
+    utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
+    openBC := 0
+    closeBC := 0
+    newRoutesContent := ""
+    for i, char := range routesBytes {
+        if char == '{' {
+            openBC++
+        } else if char == '}' {
+            closeBC++
+        }
+        if char == '}' && openBC == closeBC {
+            newRoutesContent = string(routesBytes[:i]) + string(pageContent) + string(routesBytes[i:])
+        }
+    }
+    daos.WriteToFile([]byte(newRoutesContent), routesPath)
 }

@@ -11,6 +11,7 @@ var CONFIG_FILE = "n0dzcrypt.json"
 var BASE_PAGE_BACK = RESOURCE_FOLDER + "BaseController.java"
 var BASE_IRRIGATOR = RESOURCE_FOLDER + "BaseIrrigator.java"
 var SINGLE_ROUTE = RESOURCE_FOLDER + "SingleRoute.java"
+var ROUTES = RESOURCE_FOLDER + "Routes.java"
 
 type ProjectProps struct {
     MainPackage string
