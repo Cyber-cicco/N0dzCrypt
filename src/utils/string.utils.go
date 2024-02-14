@@ -49,27 +49,42 @@ func GetPackageName(artifactId, groupId string) string {
     return transformIntoPackageName(groupId) + "." + transformIntoPackageName(artifactId)
 }
 
-func GetApplicationNameFromArtifactId(artifactId string) string {
+func GetUpperSnakeCaseFromKebab(content string) string {
+    applicationName := ""
+    for i := 0; i < len(content); i++ {
+        applicationName += string(unicode.ToUpper(rune(content[i])))
+        if content[i] == '-' {
+            applicationName += "_"
+        }
+    }
+    return applicationName
+}
+
+func GetCamelCaseFromKebab(content string) string {
     applicationName := ""
     posPrevSeparator := 0
-    for i := 0; i < len(artifactId); i++ {
+    for i := 0; i < len(content); i++ {
         nextIsUpper := false
-        if artifactId[i] == '-' || artifactId[i] == '_' {
-            applicationName += artifactId[posPrevSeparator : i]
+        if content[i] == '-' || content[i] == '_' {
+            applicationName += content[posPrevSeparator : i]
             nextIsUpper = true
-            for i < len(artifactId) && (artifactId[i] == '-' || artifactId[i] == '_') {
+            for i < len(content) && (content[i] == '-' || content[i] == '_') {
                 i++
                 posPrevSeparator = i+1
             }
         }
-        if nextIsUpper && i < len(artifactId) {
-            applicationName += string(unicode.ToUpper(rune(artifactId[i])))
+        if nextIsUpper && i < len(content) {
+            applicationName += string(unicode.ToUpper(rune(content[i])))
         }
     }
-    if posPrevSeparator < len(artifactId) - 1 {
-            applicationName += artifactId[posPrevSeparator:]
+    if posPrevSeparator < len(content) - 1 {
+            applicationName += content[posPrevSeparator:]
     }
-    return string(unicode.ToUpper(rune(applicationName[0]))) +  applicationName[1:] + "Application"
+    return string(unicode.ToUpper(rune(applicationName[0]))) +  applicationName[1:]
+}
+
+func GetApplicationName(artifactId string) string {
+    return GetUpperSnakeCaseFromKebab(artifactId) + "Application"
 }
 
 func GetDirNameFromPackage(p string) string {

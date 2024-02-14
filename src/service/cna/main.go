@@ -32,7 +32,7 @@ func CreateNodzCryptApp() {
     sqlConnection := askDependencies(scanner)
     pom.DBDependencie = sqlConnection.MavenDependencie
     dbInfos := askConnectionInfos(scanner, sqlConnection)
-    pom.MainClass = utils.GetApplicationNameFromArtifactId(pom.ArtifactId)
+    pom.MainClass = utils.GetApplicationName(pom.ArtifactId)
 
     pom.Profiles = getProfile(&pom, dbInfos)
     fileTree := config.CreateConfig(projectProps.MainPackage)

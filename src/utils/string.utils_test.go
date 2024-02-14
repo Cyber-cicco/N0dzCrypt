@@ -26,11 +26,11 @@ func TestToPackageName(t *testing.T) {
 }
 
 func TestGetApplicationName(t *testing.T) {
-    a1 := GetApplicationNameFromArtifactId("test")
-    a2 := GetApplicationNameFromArtifactId("test-test")
-    a3 := GetApplicationNameFromArtifactId("test-test-")
-    a4 := GetApplicationNameFromArtifactId("_test-test-")
-    a5 := GetApplicationNameFromArtifactId("_test--------test-")
+    a1 := GetApplicationName("test")
+    a2 := GetApplicationName("test-test")
+    a3 := GetApplicationName("test-test-")
+    a4 := GetApplicationName("_test-test-")
+    a5 := GetApplicationName("_test--------test-")
     if a1 != "TestApplication" {
         t.Fatalf("erreur pour le test 1 : test. Wanted TestApplicaton, got %q", a1)
     }

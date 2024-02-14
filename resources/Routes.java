@@ -1,5 +1,11 @@
 package {{.BasePackage}}.page;
 
+/**
+ * THIS CLASS CAN BE OVERWRITTEN BY N0DZCRYPT
+ * IF YOU INTEND TO USE THE N0DZCRYPT CLI IN YOUT APP, TRY NOT TO CHANGE IT.
+ *
+ * Contains constants pointing to thymeleaf fragments
+ */
 public class Routes {
 
     public static final String ADR_BASE_LAYOUT = "layout/base";

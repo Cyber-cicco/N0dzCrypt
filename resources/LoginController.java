@@ -8,7 +8,7 @@ import {{.BasePackage}}.security.AuthenticationInfos;
 import {{.BasePackage}}.security.service.JwtService;
 import {{.BasePackage}}.util.hx.HX;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -32,7 +32,7 @@ public class LoginController {
     public String getloginPage(){
         return Routes.ADR_LOGIN;
     }
-    @GetMapping("/login/api")
+    @GetMapping("/login/partial")
     public void redirectToLogin(HttpServletResponse response) throws IOException {
         response.setHeader(HX.REDIRECT, "/login");
     }

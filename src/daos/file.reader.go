@@ -1,11 +1,14 @@
 package daos
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"fr/nzc/config"
 	"fr/nzc/utils"
 	"os"
+	"text/template"
 )
 
 
@@ -63,4 +66,15 @@ func FileExists(dirPath string) bool {
         panic(err)
 	}
 	return true
+}
+
+func GetTemplBytes[V any](name, fileName string, linkedStruct V) []byte {
+    var tplBytes bytes.Buffer
+    fmt.Printf("linkedStruct: %v\n", linkedStruct)
+    fileContent, err := os.ReadFile(fileName);
+    utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
+    tmpl, err := template.New(name).Parse(string(fileContent))
+    utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
+    err = tmpl.Execute(&tplBytes, linkedStruct)
+    return tplBytes.Bytes()
 }

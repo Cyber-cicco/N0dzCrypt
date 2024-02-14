@@ -8,6 +8,9 @@ import (
 
 var RESOURCE_FOLDER = os.Getenv("GOPATH") + "/bin/resources/"
 var CONFIG_FILE = "n0dzcrypt.json"
+var BASE_PAGE_BACK = RESOURCE_FOLDER + "BaseController.java"
+var BASE_IRRIGATOR = RESOURCE_FOLDER + "BaseIrrigator.java"
+var SINGLE_ROUTE = RESOURCE_FOLDER + "SingleRoute.java"
 
 type ProjectProps struct {
     MainPackage string
@@ -86,6 +89,7 @@ func CreateConfig(mainPackage string) *FileTree {
         StyleStatic: static + "style/",
         StyleTemplates: templates + "style/",
         Test: root + "src/test/java/",
+        BasePackage: mainPackage,
         TestResources: root + "src/test/resources/",
     }
     configTree, err := json.MarshalIndent(fileTree, "", "  ")
