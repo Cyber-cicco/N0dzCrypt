@@ -45,6 +45,8 @@ type FileTree struct {
     StyleTemplates string`json:"styletemplates"`
     Test string`json:"test"`
     TestResources string`json:"testresources"`
+    BasePackage string`json:"basepackage"`
+    CurrentDirectory string
 }
 
 func CreateConfig(mainPackage string) *FileTree {
@@ -86,7 +88,7 @@ func CreateConfig(mainPackage string) *FileTree {
         Test: root + "src/test/java/",
         TestResources: root + "src/test/resources/",
     }
-    configTree, err := json.Marshal(fileTree)
+    configTree, err := json.MarshalIndent(fileTree, "", "  ")
     utils.HandleTechnicalError(err, ERR_MARSHARL)
     f, err := os.OpenFile(CONFIG_FILE, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
     defer f.Close()
@@ -96,3 +98,4 @@ func CreateConfig(mainPackage string) *FileTree {
     f.Write(configTree)
     return fileTree
 }
+

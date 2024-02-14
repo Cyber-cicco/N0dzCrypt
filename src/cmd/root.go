@@ -28,6 +28,7 @@ func Execute() {
 
 func init() {
     rootCmd.AddCommand(cnsa)
+    rootCmd.AddCommand(createPage)
 }
 
 

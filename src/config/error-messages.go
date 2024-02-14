@@ -14,4 +14,5 @@ var ERR_BAD_CONFIG_PACKAGE = "Error: the package specified in the configuration 
 var ERR_TEMPLATE_FILE_READ = "Error reading a template file"
 var ERR_CURR_DIR_OPEN = "Error openening current directory"
 var ERR_COULDNT_READ_INPUT = "Could not read user input"
+var ERR_COULDNT_FIND_CONFIG = "Could'nt find any configuration file for N0dzCrypt. Make sure you use create-n0dzcrypt-app or nzc init to enable the n0dzcrypt CLI in your codebase" 
 

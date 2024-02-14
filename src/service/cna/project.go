@@ -1,7 +1,6 @@
 package cna
 
 import (
-	"fmt"
 	"fr/nzc/config"
 	"fr/nzc/utils"
 	"os"
@@ -37,7 +36,6 @@ func createDirectories(fileTree *config.FileTree) {
         fileTree.PagesFront + "about/",
     } {
         err := os.MkdirAll(dirname, os.ModePerm)
-        fmt.Printf("dirname: %v\n", dirname)
         utils.HandleTechnicalError(err, config.ERR_DIR_CREATION)
     }
 }
