@@ -238,7 +238,7 @@ func createApplicationProperties(fileTree *config.FileTree){
     tmpl, err := template.New("application.yml").Parse(string(fileContent))
     if err != nil { panic(err) }
     err = tmpl.Execute(&tplBytes, properties)
-    f, err := os.OpenFile(fileTree.Resources + "application.yml", os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
+    f, err := os.OpenFile(fileTree.GetResourcesDir() + "application.yml", os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
     defer f.Close()
     if err != nil {
         panic(err)

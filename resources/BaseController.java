@@ -2,6 +2,7 @@ package {{.BasePackage}}.page;
 
 
 import {{.BasePackage}}.page.irrigator.LayoutIrrigator;
+import {{.BasePackage}}.page.irrigator.{{.ClassName}}Irrigator;
 import {{.BasePackage}}.security.service.AuthenticationService;
 import {{.BasePackage}}.security.AuthenticationInfos;
 
