@@ -11,12 +11,11 @@ import (
 func CreatePage(args []string) {
     currDir, err := filepath.Abs(".")
     utils.HandleTechnicalError(err, config.ERR_CURR_DIR_OPEN)
-    conf, err := daos.GetConfigFile(currDir)
-    utils.HandleUsageError(err, config.ERR_COULDNT_FIND_CONFIG)
+    conf := daos.GetConfigFile(currDir)
     pageHTML, err := os.ReadFile(config.RESOURCE_FOLDER + "n0dzcrypt.page.html")
     utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
     for _, arg := range args {
-        javaInfos := &JavaClassInfos{
+        javaInfos := &JavaClassInfos {
             BasePackage: conf.JavaBack.BasePackage,
             ClassName: utils.GetCamelCaseFromKebab(arg),
             PageName: arg,
@@ -33,7 +32,7 @@ func writePageFront(arg string, pageHTML []byte, conf *config.FileTree) {
     dirPageFront := conf.CurrentDirectory + conf.GetPageFrontDir() + arg + "/"
     err := os.MkdirAll(dirPageFront, os.ModePerm)
     utils.HandleTechnicalError(err, config.ERR_DIR_CREATION)
-    daos.WriteToFile(pageHTML, dirPageFront + "base.html")
+    daos.WriteToFile(pageHTML, dirPageFront + arg + ".html")
 }
 
 func writePageBack(arg string, conf *config.FileTree, javaInfos *JavaClassInfos) {
@@ -67,4 +66,11 @@ func appendRoute(arg string, conf *config.FileTree, javaInfos *JavaClassInfos) {
         }
     }
     daos.WriteToFile([]byte(newRoutesContent), routesPath)
+    conf.Routes = append(conf.Routes, config.Route{
+        RouteName: "ADR_"+ javaInfos.UpperClassName,
+        CorrespondingRoute: "page/" + javaInfos.PageName + "/" + javaInfos.PageName,
+    })
+    path, fileName, err := daos.GetConfigFilePath(conf.CurrentDirectory)
+    utils.HandleUsageError(err, config.ERR_COULDNT_FIND_CONFIG)
+    config.WriteFileTree(conf, path + "/" + fileName)
 }

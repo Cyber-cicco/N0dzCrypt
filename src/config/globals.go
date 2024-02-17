@@ -282,9 +282,14 @@ func CreateConfig(mainPackage string) *FileTree {
             },
         },
     }
+    return WriteFileTree(fileTree, CONFIG_FILE)
+}
+
+
+func WriteFileTree(fileTree *FileTree, route string) *FileTree {
     configTree, err := json.MarshalIndent(fileTree, "", "  ")
     utils.HandleTechnicalError(err, ERR_MARSHARL)
-    f, err := os.OpenFile(CONFIG_FILE, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
+    f, err := os.OpenFile(route, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
     defer f.Close()
     if err != nil {
         panic(err)
@@ -292,4 +297,3 @@ func CreateConfig(mainPackage string) *FileTree {
     f.Write(configTree)
     return fileTree
 }
-
