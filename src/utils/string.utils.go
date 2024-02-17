@@ -84,7 +84,7 @@ func GetCamelCaseFromKebab(content string) string {
 }
 
 func GetApplicationName(artifactId string) string {
-    return GetUpperSnakeCaseFromKebab(artifactId) + "Application"
+    return GetCamelCaseFromKebab(artifactId) + "Application"
 }
 
 func GetDirNameFromPackage(p string) string {

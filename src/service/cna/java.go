@@ -16,35 +16,35 @@ type FileToAdress struct {
 func createBaseFiles(pom *Pom, fileTree *config.FileTree, mainPackage string) {
     javaFile := JavaFile{BasePackage: mainPackage, MainClass: pom.MainClass}
     files := []FileToAdress{
-        {fileName: "AboutController.java", adress: fileTree.PagesBack},
-        {fileName: "AuthenticationInfos.java", adress: fileTree.Security},
-        {fileName: "AuthenticationService.java", adress: fileTree.SecurityService},
-        {fileName: "BaseUser.java", adress: fileTree.Entities},
-        {fileName: "BaseUserRepository.java", adress: fileTree.Repository},
-        {fileName: "CustomAuthenticationEntryPoint.java", adress: fileTree.SecurityConfig},
-        {fileName: "CustomLogoutHandler.java", adress: fileTree.SecurityConfig},
-        {fileName: "CustomLogoutSuccessHandler.java", adress: fileTree.SecurityConfig},
-        {fileName: "HX.java", adress: fileTree.HX},
-        {fileName: "HomeController.java", adress: fileTree.PagesBack},
-        {fileName: "JwtAuthenticationFilter.java", adress: fileTree.SecurityConfig},
-        {fileName: "JwtService.java", adress: fileTree.SecurityService},
-        {fileName: "LayoutIrrigator.java", adress: fileTree.Irrigator},
-        {fileName: "LoginController.java", adress: fileTree.PagesBack},
-        {fileName: "RoleType.java", adress: fileTree.EntityEnum},
-        {fileName: "UserRole.java", adress: fileTree.Entities},
-        {fileName: "UserRoleRepository.java", adress: fileTree.Repository},
-        {fileName: "Routes.java", adress: fileTree.PagesBack},
-        {fileName: "WebSecurityConfig.java", adress: fileTree.SecurityConfig},
-        {fileName: "base.html", adress: fileTree.Layouts},
-        {fileName: "headers.html", adress: fileTree.Layouts},
-        {fileName: "navbar.html", adress: fileTree.Components},
-        {fileName: "tailwind.config.js", adress: fileTree.Templates},
-        {fileName: "home.html", adress: fileTree.PagesFront + "home/"},
-        {fileName: "about.html", adress: fileTree.PagesFront + "about/"},
-        {fileName: "input.css", adress: fileTree.StyleTemplates},
-        {fileName: "output.css", adress: fileTree.StyleStatic},
-        {fileName: "n0dzCrypt.html", adress: fileTree.SVG},
-        {fileName: "htmx.min.js", adress: fileTree.JSTemplates},
+        {fileName: "AboutController.java", adress: fileTree.GetPageBackDir()},
+        {fileName: "AuthenticationInfos.java", adress: fileTree.GetSecurityDir()},
+        {fileName: "AuthenticationService.java", adress: fileTree.GetSecurityConfigDir()},
+        {fileName: "BaseUser.java", adress: fileTree.GetEntityDir()},
+        {fileName: "BaseUserRepository.java", adress: fileTree.GetRepositoryDir()},
+        {fileName: "CustomAuthenticationEntryPoint.java", adress: fileTree.GetSecurityConfigDir()},
+        {fileName: "CustomLogoutHandler.java", adress: fileTree.GetSecurityConfigDir()},
+        {fileName: "CustomLogoutSuccessHandler.java", adress: fileTree.GetSecurityConfigDir()},
+        {fileName: "HX.java", adress: fileTree.GetHXDir()},
+        {fileName: "HomeController.java", adress: fileTree.GetPageBackDir()},
+        {fileName: "JwtAuthenticationFilter.java", adress: fileTree.GetSecurityConfigDir()},
+        {fileName: "JwtService.java", adress: fileTree.GetSecurityServiceDir()},
+        {fileName: "LayoutIrrigator.java", adress: fileTree.GetIrrigatorDir()},
+        {fileName: "LoginController.java", adress: fileTree.GetPageBackDir()},
+        {fileName: "RoleType.java", adress: fileTree.GetEntityEnumDir()},
+        {fileName: "UserRole.java", adress: fileTree.GetEntityDir()},
+        {fileName: "UserRoleRepository.java", adress: fileTree.GetRepositoryDir()},
+        {fileName: "Routes.java", adress: fileTree.GetPageBackDir()},
+        {fileName: "WebSecurityConfig.java", adress: fileTree.GetSecurityConfigDir()},
+        {fileName: "base.html", adress: fileTree.GetTemplateLayoutsDir()},
+        {fileName: "headers.html", adress: fileTree.GetTemplateLayoutsDir()},
+        {fileName: "navbar.html", adress: fileTree.GetTemplateComponentsDir()},
+        {fileName: "tailwind.config.js", adress: fileTree.GetTemplateDir()},
+        {fileName: "home.html", adress: fileTree.GetPageFrontDir() + "home/"},
+        {fileName: "about.html", adress: fileTree.GetPageFrontDir() + "about/"},
+        {fileName: "input.css", adress: fileTree.GetTemplateStyleDir()},
+        {fileName: "output.css", adress: fileTree.GetStaticStyleDir()},
+        {fileName: "n0dzCrypt.html", adress: fileTree.GetTemplateSVGDir()},
+        {fileName: "htmx.min.js", adress: fileTree.GetTemplateJSDir()},
     }
     for _, fileToAdress := range files {
         var tplBytes bytes.Buffer
@@ -62,7 +62,7 @@ func createBaseFiles(pom *Pom, fileTree *config.FileTree, mainPackage string) {
     tmpl, err := template.New(mainClass).Parse(string(fileContent))
     if err != nil { panic(err) }
     err = tmpl.Execute(&tplBytes, javaFile)
-    f, err := os.OpenFile(fileTree.JavaRoot + mainClass, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
+    f, err := os.OpenFile(fileTree.GetJavaDir() + mainClass, os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
     defer f.Close()
     if err != nil {
         panic(err)

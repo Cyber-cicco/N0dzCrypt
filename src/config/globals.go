@@ -95,41 +95,95 @@ type JavaTest struct {
 }
 
 
+func (f FileTree) GetRepositoryDir() string{
+    return "./" + f.JavaBack.RootDir  + f.JavaBack.Repository
+}
+func (f FileTree) GetServiceDir() string{
+    return "./" + f.JavaBack.RootDir + f.JavaBack.Service
+}
+func (f FileTree) GetValidatorDir() string{
+    return "./" + f.JavaBack.RootDir + f.JavaBack.Validators
+}
 func (f FileTree) GetJavaDir() string{
     return "./" + f.JavaBack.RootDir 
 }
-
 func (f FileTree) GetPageBackDir() string{
     return "./" + f.JavaBack.RootDir + f.JavaBack.PagesDir.RootDir
 }
-
+func (f FileTree) GetIrrigatorDir() string{
+    return "./" + f.JavaBack.RootDir + f.JavaBack.PagesDir.RootDir + f.JavaBack.PagesDir.Irrigator
+}
+func (f FileTree) GetJsonMapperDir() string{
+    return "./" + f.JavaBack.RootDir + f.JavaBack.Json.RootDir + f.JavaBack.Json.Mapper
+}
+func (f FileTree) GetJsonDtoDir() string{
+    return "./" + f.JavaBack.RootDir + f.JavaBack.Json.RootDir + f.JavaBack.Json.Dto
+}
 func (f FileTree) GetJsonDir() string{
     return "./" + f.JavaBack.RootDir + f.JavaBack.Json.RootDir
 }
-
 func (f FileTree) GetEntityDir() string{
     return "./" + f.JavaBack.RootDir + f.JavaBack.Entities.RootDir
+}
+func (f FileTree) GetEntityEnumDir() string{
+    return "./" + f.JavaBack.RootDir + f.JavaBack.Entities.RootDir + f.JavaBack.Entities.Enum
 }
 func (f FileTree) GetSecurityDir() string{
     return "./" + f.JavaBack.RootDir + f.JavaBack.Security.RootDir
 }
+func (f FileTree) GetSecurityConfigDir() string{
+    return "./" + f.JavaBack.RootDir + f.JavaBack.Security.RootDir + f.JavaBack.Security.Config
+}
+func (f FileTree) GetSecurityServiceDir() string{
+    return "./" + f.JavaBack.RootDir + f.JavaBack.Security.RootDir + f.JavaBack.Security.Service
+}
 func (f FileTree) GetUtilsDir() string{
     return "./" + f.JavaBack.RootDir + f.JavaBack.Utils.RootDir
 }
-
+func (f FileTree) GetHXDir() string{
+    return "./" + f.JavaBack.RootDir + f.JavaBack.Utils.RootDir + f.JavaBack.Utils.HX
+}
 func (f FileTree) GetResourcesDir() string{
     return "./" + f.Resources.RootDir 
+}
+func (f FileTree) GetTemplateSVGDir() string{
+    return "./" + f.Resources.RootDir + f.Resources.Templates.RootDir + f.Resources.Templates.SVG
+}
+func (f FileTree) GetTemplateStyleDir() string{
+    return "./" + f.Resources.RootDir + f.Resources.Templates.RootDir + f.Resources.Templates.StyleTemplates
 }
 func (f FileTree) GetTemplateDir() string{
     return "./" + f.Resources.RootDir + f.Resources.Templates.RootDir
 }
-
+func (f FileTree) GetTemplateComponentsDir() string{
+    return "./" + f.Resources.RootDir + f.Resources.Templates.RootDir + f.Resources.Templates.Components
+}
+func (f FileTree) GetTemplateLayoutsDir() string{
+    return "./" + f.Resources.RootDir + f.Resources.Templates.RootDir + f.Resources.Templates.Layouts
+}
+func (f FileTree) GetTemplateJSDir() string{
+    return "./" + f.Resources.RootDir + f.Resources.Templates.RootDir + f.Resources.Templates.JS
+}
 func (f FileTree) GetPageFrontDir() string{
     return "./" + f.Resources.RootDir + f.Resources.Templates.RootDir + f.Resources.Templates.PagesFront
 }
-
 func (f FileTree) GetTestDir() string{
     return "./" + f.Resources.RootDir + f.Resources.Static.RootDir
+}
+func (f FileTree) GetTestRessourcesDir() string{
+    return "./" + f.Resources.RootDir + f.Resources.Static.RootDir + f.JavaTest.TestMain + f.JavaTest.TestRessources
+}
+func (f FileTree) GetTestMainDir() string{
+    return "./" + f.Resources.RootDir + f.Resources.Static.RootDir + f.JavaTest.TestMain
+}
+func (f FileTree) GetStaticStyleDir() string{
+    return "./" + f.Resources.RootDir + f.Resources.Static.RootDir + f.Resources.Static.Style
+}
+func (f FileTree) GetStaticImgDir() string{
+    return "./" + f.Resources.RootDir + f.Resources.Static.RootDir + f.Resources.Static.Img
+}
+func (f FileTree) GetStaticJsDir() string{
+    return "./" + f.Resources.RootDir + f.Resources.Static.RootDir + f.Resources.Static.JS
 }
 func (f FileTree) GetStaticDir() string{
     return "./" + f.Resources.RootDir + f.Resources.Static.RootDir
@@ -157,7 +211,11 @@ func CreateConfig(mainPackage string) *FileTree {
         JavaBack: JavaBack{
             RootDir:javaDir,
             BasePackage:mainPackage,
-            PagesDir:PageBackDir{},
+            PagesDir:PageBackDir{
+                RootDir:"page/",
+                Controller:"",
+                Irrigator:"irrigator/",
+            },
             Service:"service/",
             Security:SecurityDir{
                 RootDir:"security/",
@@ -181,13 +239,10 @@ func CreateConfig(mainPackage string) *FileTree {
             },
         },
         Resources: Resources{
-            RootDir:"src/main/resources",
+            RootDir:"src/main/resources/",
             Templates:FrontTemplates{
                 RootDir:"templates/",
-                PagesFront:PageFront{
-                    RootDir: "pages/",
-                    Fragments: "fragment/",
-                },
+                PagesFront:"page/",
                 Components:"component/",
                 Layouts:"layout/",
                 SVG:"svg/",
@@ -202,7 +257,7 @@ func CreateConfig(mainPackage string) *FileTree {
             },
         },
         JavaTest:JavaTest{
-            RootDir:"src/test/java",
+            RootDir:"src/test/java/",
         },
         Routes: []Route{
             {

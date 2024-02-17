@@ -19,7 +19,7 @@ func createPom(pom *Pom, fileTree *config.FileTree) {
 }
 
 func writePom(content *bytes.Buffer, fileTree *config.FileTree) {
-    f, err := os.OpenFile(fileTree.Root + "pom.xml", os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
+    f, err := os.OpenFile("./pom.xml", os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
     defer f.Close()
     if err != nil {
         panic(err)

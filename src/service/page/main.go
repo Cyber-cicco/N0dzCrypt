@@ -17,7 +17,7 @@ func CreatePage(args []string) {
     utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
     for _, arg := range args {
         javaInfos := &JavaClassInfos{
-            BasePackage: conf.BasePackage,
+            BasePackage: conf.JavaBack.BasePackage,
             ClassName: utils.GetCamelCaseFromKebab(arg),
             PageName: arg,
             UpperClassName: utils.GetUpperSnakeCaseFromKebab(arg),
@@ -30,27 +30,27 @@ func CreatePage(args []string) {
 }
 
 func writePageFront(arg string, pageHTML []byte, conf *config.FileTree) {
-    dirPageFront := conf.CurrentDirectory + conf.PagesFront + arg + "/"
+    dirPageFront := conf.CurrentDirectory + conf.GetPageFrontDir() + arg + "/"
     err := os.MkdirAll(dirPageFront, os.ModePerm)
     utils.HandleTechnicalError(err, config.ERR_DIR_CREATION)
     daos.WriteToFile(pageHTML, dirPageFront + "base.html")
 }
 
 func writePageBack(arg string, conf *config.FileTree, javaInfos *JavaClassInfos) {
-    dirPageBack := conf.CurrentDirectory + conf.PagesBack 
+    dirPageBack := conf.CurrentDirectory + conf.GetPageBackDir() 
     pageContent := daos.GetTemplBytes[JavaClassInfos](arg, config.BASE_PAGE_BACK, *javaInfos)
     daos.WriteToFile(pageContent, dirPageBack + javaInfos.ClassName + "Controller.java")
 }
 
 func writeIrrigator(arg string, conf *config.FileTree, javaInfos *JavaClassInfos) {
-    dirPageBack := conf.CurrentDirectory + conf.Irrigator 
+    dirPageBack := conf.CurrentDirectory + conf.GetIrrigatorDir() 
     pageContent := daos.GetTemplBytes[JavaClassInfos](arg, config.BASE_IRRIGATOR, *javaInfos)
     daos.WriteToFile(pageContent, dirPageBack + javaInfos.ClassName + "Irrigator.java")
 }
 
 func appendRoute(arg string, conf *config.FileTree, javaInfos *JavaClassInfos) {
     pageContent := daos.GetTemplBytes[JavaClassInfos](arg, config.SINGLE_ROUTE, *javaInfos)
-    routesPath := conf.CurrentDirectory + conf.PagesBack + "Routes.java"
+    routesPath := conf.CurrentDirectory + conf.GetPageBackDir() + "Routes.java"
     routesBytes, err := os.ReadFile(routesPath)
     utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
     openBC := 0
