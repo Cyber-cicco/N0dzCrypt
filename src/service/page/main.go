@@ -1,6 +1,7 @@
 package page
 
 import (
+	"fmt"
 	"fr/nzc/config"
 	"fr/nzc/daos"
 	"fr/nzc/utils"
@@ -32,19 +33,25 @@ func writePageFront(arg string, pageHTML []byte, conf *config.FileTree) {
     dirPageFront := conf.CurrentDirectory + conf.GetPageFrontDir() + arg + "/"
     err := os.MkdirAll(dirPageFront, os.ModePerm)
     utils.HandleTechnicalError(err, config.ERR_DIR_CREATION)
-    daos.WriteToFile(pageHTML, dirPageFront + arg + ".html")
+    newFile := dirPageFront + arg + ".html"
+    daos.WriteToFile(pageHTML, newFile)
+    fmt.Println("written file : " + newFile)
 }
 
 func writePageBack(arg string, conf *config.FileTree, javaInfos *JavaClassInfos) {
     dirPageBack := conf.CurrentDirectory + conf.GetPageBackDir() 
     pageContent := daos.GetTemplBytes[JavaClassInfos](arg, config.BASE_PAGE_BACK, *javaInfos)
-    daos.WriteToFile(pageContent, dirPageBack + javaInfos.ClassName + "Controller.java")
+    newFile := dirPageBack + javaInfos.ClassName + "Controller.java"
+    daos.WriteToFile(pageContent, newFile)
+    fmt.Println("written file : " + newFile)
 }
 
 func writeIrrigator(arg string, conf *config.FileTree, javaInfos *JavaClassInfos) {
     dirPageBack := conf.CurrentDirectory + conf.GetIrrigatorDir() 
     pageContent := daos.GetTemplBytes[JavaClassInfos](arg, config.BASE_IRRIGATOR, *javaInfos)
-    daos.WriteToFile(pageContent, dirPageBack + javaInfos.ClassName + "Irrigator.java")
+    newFile := dirPageBack + javaInfos.ClassName + "Irrigator.java"
+    daos.WriteToFile(pageContent, newFile)
+    fmt.Println("written file : " + newFile)
 }
 
 func appendRoute(arg string, conf *config.FileTree, javaInfos *JavaClassInfos) {
@@ -73,4 +80,5 @@ func appendRoute(arg string, conf *config.FileTree, javaInfos *JavaClassInfos) {
     path, fileName, err := daos.GetConfigFilePath(conf.CurrentDirectory)
     utils.HandleUsageError(err, config.ERR_COULDNT_FIND_CONFIG)
     config.WriteFileTree(conf, path + "/" + fileName)
+    fmt.Println("Updated Routes.java and n0dzcrypt.json")
 }

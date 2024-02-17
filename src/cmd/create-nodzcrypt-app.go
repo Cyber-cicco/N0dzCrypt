@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var cnsa = &cobra.Command{
+var cnsaCmd = &cobra.Command{
 	Use:   "create-nodzcrypt-app",
 	Short: "Create a N0dzCrypt application",
 	Long: `

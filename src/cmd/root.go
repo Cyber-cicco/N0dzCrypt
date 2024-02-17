@@ -27,8 +27,9 @@ func Execute() {
 }
 
 func init() {
-    rootCmd.AddCommand(cnsa)
-    rootCmd.AddCommand(createPage)
+    rootCmd.AddCommand(cnsaCmd)
+    rootCmd.AddCommand(createPageCmd)
+    rootCmd.AddCommand(mvCmd)
 }
 
 

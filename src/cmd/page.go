@@ -7,9 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var pageName string
-
-var createPage = &cobra.Command{
+var createPageCmd = &cobra.Command{
 	Use:   "page",
 	Short: "add a page to your project",
 	Long: `

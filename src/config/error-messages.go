@@ -15,4 +15,17 @@ var ERR_TEMPLATE_FILE_READ = "Error reading a template file"
 var ERR_CURR_DIR_OPEN = "Error openening current directory"
 var ERR_COULDNT_READ_INPUT = "Could not read user input"
 var ERR_COULDNT_FIND_CONFIG = "Could'nt find any configuration file for N0dzCrypt. Make sure you use create-n0dzcrypt-app or nzc init to enable the n0dzcrypt CLI in your codebase" 
+var ERR_BAD_MV_ARGS = `
+Unsupported file type. N0dzCrypt only allows the following types of file to be renamed: 
+    - comp : components of your application, aka thymeleaf fragments used globally in your application. Cannot be referenced in your backend routes.
+    - page : page of your application, aka a standalone thymeleaf fragment that is not referenced anywhere else in your front end fragments. Can be referenced in your backend routes.
+    - frag : fragment of a page of your application, aka a thymeleaf fragment that is only referenced in your pageor by other fragments of your page. 
+    - layout : layout of your app, usually containing the headers and components that will not change when navigating from one page to another.
+    - tstyle : a css file in your templates folder that is meant to be included inline in one or more fragments of your application. 
+    - tscript : a javascript file in your templates folder that is meant to be included inline in one or more fragments of your application
+    - svg : an html file containing a single svg, that can be inlined in any of your fragments.
+    - style : a css file in your static folder that can be referenced through links in your html.
+    - script :  a javascript file in your static folder that can be referenced through the "src" attribute in a script tag.
+    - img : an image in your static folder that can be referenced through the "src" attribute in an img tag.
+`
 
