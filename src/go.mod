@@ -9,6 +9,7 @@ require (
 	github.com/gdamore/tcell v1.3.0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.0.2 // indirect
 	github.com/mattn/go-runewidth v0.0.4 // indirect
+	github.com/smacker/go-tree-sitter v0.0.0-20240214120134-1f283e24f560 // indirect
 	golang.org/x/sys v0.16.0 // indirect
 	golang.org/x/term v0.16.0 // indirect
 	golang.org/x/text v0.14.0 // indirect

@@ -188,6 +188,9 @@ func (f FileTree) GetStaticJsDir() string{
 func (f FileTree) GetStaticDir() string{
     return "./" + f.Resources.RootDir + f.Resources.Static.RootDir
 }
+func (f FileTree) GetFragmentReference(fragmentPath string) string{
+    return "./" + f.Resources.RootDir + f.Resources.Static.RootDir
+}
 
 
 type FileTree struct {

@@ -3,10 +3,12 @@ package mv
 import (
 	"errors"
 	"fr/nzc/config"
+	"fr/nzc/thymeleaf"
 	"fr/nzc/utils"
 )
 
 func MovePage(args []string, flag string) {
+    thymeleaf.TestParser()
     switch flag {
     case "" : {
 
