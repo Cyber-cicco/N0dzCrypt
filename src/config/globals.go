@@ -2,7 +2,6 @@ package config
 
 import (
 	"encoding/json"
-	"fmt"
 	"fr/nzc/utils"
 	"os"
 	"path/filepath"
@@ -197,7 +196,9 @@ func (f FileTree) GetFragmentReference(fragmentPath string) string{
     utils.HandleUsageError(err, "Couldn't find or open file")
     splitPath := strings.Split(absPath, f.Resources.Templates.RootDir)
     fragmentReference = splitPath[len(splitPath)-1]
-    fmt.Println(fragmentReference)
+    if strings.HasSuffix(fragmentReference,  ".html") {
+        fragmentReference = strings.Split(fragmentReference, ".")[0]
+    }
     return fragmentReference
 }
 
@@ -205,7 +206,7 @@ type FileTree struct {
     JavaBack JavaBack `json:"java-back"`
     Resources Resources`json:"resources"`
     JavaTest JavaTest`json:"java-test"`
-    CurrentDirectory string`json:"-"`
+    ProjectAbsolutePath string`json:"-"`
     PageDomains []Domain `json:"page-domains"`
     Routes []Route `json:"routes"`
 }

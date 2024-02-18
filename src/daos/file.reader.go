@@ -7,9 +7,17 @@ import (
 	"fmt"
 	"fr/nzc/config"
 	"fr/nzc/utils"
+	"io/fs"
+	"io/ioutil"
 	"os"
+	"strings"
 	"text/template"
 )
+
+/*
+* fileFunc is a function that takes a string as parameter
+*/
+type fileFunc func(fileContent, filePath string)
 
 
 func GetConfigFile(path string) *config.FileTree {
@@ -21,7 +29,7 @@ func GetConfigFile(path string) *config.FileTree {
     utils.HandleTechnicalError(err, config.ERR_OPEN_CONFIG)
 
     fileTree := &config.FileTree{
-        CurrentDirectory: path + "/",
+        ProjectAbsolutePath: path + "/",
     }
 
     json.Unmarshal(file, &fileTree)
@@ -87,4 +95,40 @@ func GetTemplBytes[V any](name, fileName string, linkedStruct V) []byte {
     utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
     err = tmpl.Execute(&tplBytes, linkedStruct)
     return tplBytes.Bytes()
+}
+
+/* parseFolders 
+* recursively processes files and directories within a specified path.
+* 
+* 
+* This function recursively explores the directory structure starting from the provided 'path'.
+* For each file encountered, it checks whether it is a directory or a file with the specified suffix.
+* If the file is a directory, it continues to recursively process its contents.
+* If the file matches the specified suffix, it reads its content and applies the 'executable' function to it.
+* 
+* Parameters 'path' and 'suffix' determine the scope of the search, and 'executable' defines the action to be performed on matching files.
+* 
+* @param files ([]fs.FileInfo): A list of FileInfo objects representing files and directories.
+* @param path (string): The current directory path being processed.
+* @param suffix (string): A file extension suffix used to filter files (e.g., ".txt", ".java").
+* @param executable (fileFunc): A function that accepts a string as input and performs a specific operation.
+*/
+func parseFolders(files []fs.FileInfo, path, suffix string, executable fileFunc){
+    for _, file := range files {
+        if file.IsDir() {
+            files, err := ioutil.ReadDir(path+"/"+file.Name())
+            utils.HandleTechnicalError(err, config.ERR_CURR_DIR_OPEN)
+            parseFolders(files, path+"/"+file.Name(), suffix, executable)
+        } else if strings.HasSuffix(file.Name(), suffix) {
+            filePath := path+"/"+file.Name()
+            content, err := os.ReadFile(filePath)
+            utils.HandleTechnicalError(err, config.ERR_CURR_DIR_OPEN)
+            executable(string(content), filePath)
+        }
+    }
+}
+func ParseFolders(suffix, path string, executable fileFunc) {
+	files, err := ioutil.ReadDir(path)
+    utils.HandleTechnicalError(err, config.ERR_CURR_DIR_OPEN)
+    parseFolders(files, path, suffix, executable)
 }

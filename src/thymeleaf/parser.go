@@ -2,8 +2,8 @@ package thymeleaf
 
 import (
 	"context"
-	"fmt"
 	"fr/nzc/config"
+	"fr/nzc/daos"
 	"strings"
 
 	sitter "github.com/smacker/go-tree-sitter"
@@ -32,9 +32,7 @@ func mvReplacesAndInserts(sourceCodeAsString, oldName, newName string) string {
 			break
 		}
         m = qc.FilterPredicates(m, sourceCode)
-        fmt.Println(m.Captures)
         for _, c := range m.Captures {
-            fmt.Println(c.Node.Content(sourceCode))
             parentNode := c.Node.Parent()
             if parentNode.ChildCount() < 3 {
                 continue
@@ -57,7 +55,12 @@ func mvReplacesAndInserts(sourceCodeAsString, oldName, newName string) string {
 }
 
 func RenameProjectFiles(oldname, newName string, fileTree *config.FileTree) {
-    
+    pathOfTemplates := fileTree.ProjectAbsolutePath + fileTree.GetTemplateDir()
+    daos.ParseFolders(".html", pathOfTemplates, func(content, filePath string){
+        newCode := mvReplacesAndInserts(content, oldname, newName)
+        daos.WriteToFile([]byte(newCode), filePath)
+    })
+
 }
 
 func parsePage() {
@@ -65,10 +68,6 @@ func parsePage() {
 }
 
 func renameRoute() {
-
-}
-
-func replaceInsertsAndReplaces() {
 
 }
 

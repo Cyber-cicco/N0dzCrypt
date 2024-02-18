@@ -25,7 +25,7 @@ func TestMvReplacesAndInsert(t *testing.T) {
         t.Fatalf("erreur pour le test 1 : test. Wanted %q, got %q", expect1, output1)
     }
     if output2 != expect2 {
-        t.Fatalf("erreur pour le test 1 : test. Wanted %q, got %q", expect2, output2)
+        t.Fatalf("erreur pour le test 2 : test. Wanted %q, got %q", expect2, output2)
     }
 
 }

@@ -30,7 +30,7 @@ func CreatePage(args []string) {
 }
 
 func writePageFront(arg string, pageHTML []byte, conf *config.FileTree) {
-    dirPageFront := conf.CurrentDirectory + conf.GetPageFrontDir() + arg + "/"
+    dirPageFront := conf.ProjectAbsolutePath + conf.GetPageFrontDir() + arg + "/"
     err := os.MkdirAll(dirPageFront, os.ModePerm)
     utils.HandleTechnicalError(err, config.ERR_DIR_CREATION)
     newFile := dirPageFront + arg + ".html"
@@ -39,7 +39,7 @@ func writePageFront(arg string, pageHTML []byte, conf *config.FileTree) {
 }
 
 func writePageBack(arg string, conf *config.FileTree, javaInfos *JavaClassInfos) {
-    dirPageBack := conf.CurrentDirectory + conf.GetPageBackDir() 
+    dirPageBack := conf.ProjectAbsolutePath + conf.GetPageBackDir() 
     pageContent := daos.GetTemplBytes[JavaClassInfos](arg, config.BASE_PAGE_BACK, *javaInfos)
     newFile := dirPageBack + javaInfos.ClassName + "Controller.java"
     daos.WriteToFile(pageContent, newFile)
@@ -47,7 +47,7 @@ func writePageBack(arg string, conf *config.FileTree, javaInfos *JavaClassInfos)
 }
 
 func writeIrrigator(arg string, conf *config.FileTree, javaInfos *JavaClassInfos) {
-    dirPageBack := conf.CurrentDirectory + conf.GetIrrigatorDir() 
+    dirPageBack := conf.ProjectAbsolutePath + conf.GetIrrigatorDir() 
     pageContent := daos.GetTemplBytes[JavaClassInfos](arg, config.BASE_IRRIGATOR, *javaInfos)
     newFile := dirPageBack + javaInfos.ClassName + "Irrigator.java"
     daos.WriteToFile(pageContent, newFile)
@@ -56,7 +56,7 @@ func writeIrrigator(arg string, conf *config.FileTree, javaInfos *JavaClassInfos
 
 func appendRoute(arg string, conf *config.FileTree, javaInfos *JavaClassInfos) {
     pageContent := daos.GetTemplBytes[JavaClassInfos](arg, config.SINGLE_ROUTE, *javaInfos)
-    routesPath := conf.CurrentDirectory + conf.GetPageBackDir() + "Routes.java"
+    routesPath := conf.ProjectAbsolutePath + conf.GetPageBackDir() + "Routes.java"
     routesBytes, err := os.ReadFile(routesPath)
     utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
     openBC := 0
@@ -77,7 +77,7 @@ func appendRoute(arg string, conf *config.FileTree, javaInfos *JavaClassInfos) {
         RouteName: "ADR_"+ javaInfos.UpperClassName,
         CorrespondingRoute: "page/" + javaInfos.PageName + "/" + javaInfos.PageName,
     })
-    path, fileName, err := daos.GetConfigFilePath(conf.CurrentDirectory)
+    path, fileName, err := daos.GetConfigFilePath(conf.ProjectAbsolutePath)
     utils.HandleUsageError(err, config.ERR_COULDNT_FIND_CONFIG)
     config.WriteFileTree(conf, path + "/" + fileName)
     fmt.Println("Updated Routes.java and n0dzcrypt.json")
