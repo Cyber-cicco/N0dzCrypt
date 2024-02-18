@@ -2,8 +2,11 @@ package config
 
 import (
 	"encoding/json"
+	"fmt"
 	"fr/nzc/utils"
 	"os"
+	"path/filepath"
+	"strings"
 )
 
 var RESOURCE_FOLDER = os.Getenv("GOPATH") + "/bin/resources/"
@@ -189,9 +192,14 @@ func (f FileTree) GetStaticDir() string{
     return "./" + f.Resources.RootDir + f.Resources.Static.RootDir
 }
 func (f FileTree) GetFragmentReference(fragmentPath string) string{
-    return "./" + f.Resources.RootDir + f.Resources.Static.RootDir
+    var fragmentReference string
+    absPath, err := filepath.Abs(fragmentPath)
+    utils.HandleUsageError(err, "Couldn't find or open file")
+    splitPath := strings.Split(absPath, f.Resources.Templates.RootDir)
+    fragmentReference = splitPath[len(splitPath)-1]
+    fmt.Println(fragmentReference)
+    return fragmentReference
 }
-
 
 type FileTree struct {
     JavaBack JavaBack `json:"java-back"`
