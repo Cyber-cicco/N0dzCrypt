@@ -20,12 +20,13 @@ func init(){
 }
 
 func mvReplacesAndInserts(sourceCodeAsString, oldName, newName string) string {
-    newCode := sourceCodeAsString
+    newCode := []string{}
     sourceCode := []byte(sourceCodeAsString)
 	n, _ := sitter.ParseCtx(context.Background(), sourceCode, lang)
 	q, _ := sitter.NewQuery([]byte(Q_TH_REPLACE_INSERT), lang)
 	qc := sitter.NewQueryCursor()
 	qc.Exec(q, n)
+    lastIndex := 0
     for {
 		m, ok := qc.NextMatch()
 		if !ok {
@@ -44,14 +45,16 @@ func mvReplacesAndInserts(sourceCodeAsString, oldName, newName string) string {
             attributeContent := attributeNode.Child(1)
             contentAsString := attributeContent.Content(sourceCode)
             if(strings.Contains(contentAsString, oldName)) {
-                newName = strings.ReplaceAll(contentAsString, oldName, newName)
+                newAdress := strings.ReplaceAll(contentAsString, oldName, newName)
                 idxStart := attributeContent.StartByte()
                 idxEnd := attributeContent.EndByte()
-                newCode = sourceCodeAsString[:idxStart] + newName + sourceCodeAsString[idxEnd:]
+                newCode = append(newCode, sourceCodeAsString[lastIndex:idxStart] + newAdress)
+                lastIndex = int(idxEnd)
             }
         }
     }
-    return newCode
+    newCode = append(newCode, sourceCodeAsString[lastIndex:])
+    return strings.Join(newCode, "")
 }
 
 func RenameProjectFiles(oldname, newName string, fileTree *config.FileTree) {
