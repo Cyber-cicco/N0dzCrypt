@@ -4,22 +4,26 @@ import (
 	"context"
 	"fmt"
 	"fr/nzc/config"
+	"strings"
 
 	sitter "github.com/smacker/go-tree-sitter"
 	"github.com/smacker/go-tree-sitter/html"
 )
 
-func TestParser() {
-    parser := sitter.NewParser()
-    lang := html.GetLanguage()
-    parser.SetLanguage(lang)
-    sourceCodeAsString := `
-<div th:text="${cours.getNom()}">Placeholder</div>
-    `
-    var newCode string
+var htmlParser *sitter.Parser
+var lang *sitter.Language
+
+func init(){
+    lang = html.GetLanguage()
+    htmlParser = sitter.NewParser()
+    htmlParser.SetLanguage(lang)
+}
+
+func mvReplacesAndInserts(sourceCodeAsString, oldName, newName string) string {
+    newCode := sourceCodeAsString
     sourceCode := []byte(sourceCodeAsString)
 	n, _ := sitter.ParseCtx(context.Background(), sourceCode, lang)
-	q, _ := sitter.NewQuery([]byte(Q_TH_ATTRIBUTE), lang)
+	q, _ := sitter.NewQuery([]byte(Q_TH_REPLACE_INSERT), lang)
 	qc := sitter.NewQueryCursor()
 	qc.Exec(q, n)
     for {
@@ -28,15 +32,28 @@ func TestParser() {
 			break
 		}
         m = qc.FilterPredicates(m, sourceCode)
+        fmt.Println(m.Captures)
         for _, c := range m.Captures {
-            targetedNode := c.Node.Parent().Child(2).Child(1)
-            idxStart := targetedNode.StartByte()
-            idxEnd := targetedNode.EndByte()
-            fmt.Println(string(sourceCode[idxStart:idxEnd]))
-            newCode = sourceCodeAsString[:idxStart] + "test" + sourceCodeAsString[idxEnd:]
+            fmt.Println(c.Node.Content(sourceCode))
+            parentNode := c.Node.Parent()
+            if parentNode.ChildCount() < 3 {
+                continue
+            }
+            attributeNode := parentNode.Child(2)
+            if attributeNode.ChildCount() < 2 {
+                continue
+            }
+            attributeContent := attributeNode.Child(1)
+            contentAsString := attributeContent.Content(sourceCode)
+            if(strings.Contains(contentAsString, oldName)) {
+                newName = strings.ReplaceAll(contentAsString, oldName, newName)
+                idxStart := attributeContent.StartByte()
+                idxEnd := attributeContent.EndByte()
+                newCode = sourceCodeAsString[:idxStart] + newName + sourceCodeAsString[idxEnd:]
+            }
         }
     }
-    fmt.Println(newCode)
+    return newCode
 }
 
 func RenameProjectFiles(oldname, newName string, fileTree *config.FileTree) {
