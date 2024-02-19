@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"fr/nzc/config"
 	"fr/nzc/daos"
+	"fr/nzc/java"
 	"fr/nzc/thymeleaf"
 	"fr/nzc/utils"
 	"os"
@@ -70,6 +71,6 @@ func handleBaseCase(oldName, newName string, fileTree *config.FileTree) {
     os.Remove(oldName)
     oldName = fileTree.GetFragmentReference(oldName)
     newName = fileTree.GetFragmentReference(newName)
-    fmt.Println(newName)
     thymeleaf.RenameProjectFiles(oldName, newName, fileTree)
+    java.RenameRoute(oldName, newName, fileTree)
 }

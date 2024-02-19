@@ -11,19 +11,19 @@ import (
 )
 
 var htmlParser *sitter.Parser
-var lang *sitter.Language
+var htmlLang *sitter.Language
 
 func init(){
-    lang = html.GetLanguage()
+    htmlLang = html.GetLanguage()
     htmlParser = sitter.NewParser()
-    htmlParser.SetLanguage(lang)
+    htmlParser.SetLanguage(htmlLang)
 }
 
 func mvReplacesAndInserts(sourceCodeAsString, oldName, newName string) string {
     newCode := []string{}
     sourceCode := []byte(sourceCodeAsString)
-	n, _ := sitter.ParseCtx(context.Background(), sourceCode, lang)
-	q, _ := sitter.NewQuery([]byte(Q_TH_REPLACE_INSERT), lang)
+	n, _ := sitter.ParseCtx(context.Background(), sourceCode, htmlLang)
+	q, _ := sitter.NewQuery([]byte(Q_TH_REPLACE_INSERT), htmlLang)
 	qc := sitter.NewQueryCursor()
 	qc.Exec(q, n)
     lastIndex := 0
@@ -63,14 +63,9 @@ func RenameProjectFiles(oldname, newName string, fileTree *config.FileTree) {
         newCode := mvReplacesAndInserts(content, oldname, newName)
         daos.WriteToFile([]byte(newCode), filePath)
     })
-
 }
 
 func parsePage() {
-
 }
 
-func renameRoute() {
-
-}
 

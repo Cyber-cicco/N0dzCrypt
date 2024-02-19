@@ -9,8 +9,8 @@ var Q_TH_REPLACE = `(
 (#eq? @tag "th:replace")
 )`
 var Q_TH_REPLACE_INSERT = `(
-(attribute_name) @tag
-(#any-of @tag
+(attribute_name) @caca
+(#any-of @caca
     "th:insert"
     "th:replace"
 )
