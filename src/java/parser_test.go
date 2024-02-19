@@ -1,6 +1,8 @@
 package java
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestChangeRouteFile(t *testing.T) {
     sourceCode := `
@@ -29,5 +31,5 @@ public class Routes {
 `
     oldname := "page/about/about"
     newname := "page/about/infos"
-    changeRouteInJavaFile(sourceCode, oldname, newname)
+    changeRouteInRoutesFile(oldname, newname, sourceCode)
 }

@@ -59,6 +59,16 @@ func GetUpperSnakeCaseFromKebab(content string) string {
     }
     return applicationName
 }
+func GetUpperSnakeCaseFromDir(content string) string {
+    applicationName := ""
+    for i := 0; i < len(content); i++ {
+        applicationName += string(unicode.ToUpper(rune(content[i])))
+        if content[i] == '/' {
+            applicationName += "_"
+        }
+    }
+    return applicationName
+}
 
 func GetCamelCaseFromKebab(content string) string {
     applicationName := ""
@@ -89,4 +99,9 @@ func GetApplicationName(artifactId string) string {
 
 func GetDirNameFromPackage(p string) string {
     return strings.ReplaceAll(p, ".", "/") + "/"
+}
+
+func GetNewAdressVarFromOldName(routeName string) string {
+    pageName := strings.Split(routeName, "/")
+    return "ADR_" + GetUpperSnakeCaseFromDir(pageName[len(pageName) -1])
 }

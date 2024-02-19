@@ -2,7 +2,6 @@ package mv
 
 import (
 	"errors"
-	"fmt"
 	"fr/nzc/config"
 	"fr/nzc/daos"
 	"fr/nzc/java"
