@@ -1,6 +1,9 @@
 package utils
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func TestToPackageName(t *testing.T) {
     p1 := transformIntoPackageName("test")
@@ -47,3 +50,4 @@ func TestGetApplicationName(t *testing.T) {
         t.Fatalf("erreur pour le test 5 : _test--------test-. Wanted TestTestApplicaton, got %q", a5)
     }
 }
+

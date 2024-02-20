@@ -2,6 +2,7 @@ package mv
 
 import (
 	"errors"
+	"fmt"
 	"fr/nzc/config"
 	"fr/nzc/daos"
 	"fr/nzc/java"
@@ -66,10 +67,20 @@ func handleBaseCase(oldName, newName string, fileTree *config.FileTree) {
     if daos.FileExists(newName) {
         utils.HandleUsageError(errors.New("Can't move file"), config.ERR_MOVING_FILE)
     }
+    writeNecessaryDir(oldName, newName, fileTree)
     daos.WriteToFile(file, newName)
     os.Remove(oldName)
     oldName = fileTree.GetFragmentReference(oldName)
     newName = fileTree.GetFragmentReference(newName)
     thymeleaf.RenameProjectFiles(oldName, newName, fileTree)
     java.RenameRoute(oldName, newName, fileTree)
+}
+
+func writeNecessaryDir(oldname, newname string, fileTree *config.FileTree) {
+    newDirName := utils.GetDirectoryFromPath(newname)
+    fmt.Println(newDirName)
+    err := os.MkdirAll(newDirName, os.ModePerm)
+    if err != nil {
+        fmt.Println("Couldn't create the necessary directories")
+    }
 }

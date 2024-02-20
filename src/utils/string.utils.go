@@ -105,3 +105,27 @@ func GetNewAdressVarFromName(routeName string) string {
     pageName := strings.Split(routeName, "/")
     return "ADR_" + GetUpperSnakeCaseFromDir(pageName[len(pageName) -1])
 }
+
+func GetDirectoryFromPath(newname string) string {
+    splitPath := strings.Split(newname, "/")
+    if len(splitPath) > 1 {
+        return strings.Join(splitPath[:len(splitPath) - 1], "/") 
+    }
+    return ""
+}
+
+func StripPathFromDirectoryReference(path string) string {
+    files := strings.Split(path, "/")
+    newFiles := []string{}
+    for _, f := range files {
+        if f == ".." {
+            newFiles = newFiles[:len(newFiles) -1]
+            continue
+        }
+        if f == "." {
+            continue
+        }
+        newFiles = append(newFiles, f)
+    }
+    return strings.Join(newFiles, "/")
+}

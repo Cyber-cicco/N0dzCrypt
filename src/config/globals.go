@@ -196,6 +196,7 @@ func (f FileTree) GetFragmentReference(fragmentPath string) string{
     utils.HandleUsageError(err, "Couldn't find or open file")
     splitPath := strings.Split(absPath, f.Resources.Templates.RootDir)
     fragmentReference = splitPath[len(splitPath)-1]
+    fragmentReference = utils.StripPathFromDirectoryReference(fragmentReference)
     if strings.HasSuffix(fragmentReference,  ".html") {
         fragmentReference = strings.Split(fragmentReference, ".")[0]
     }
