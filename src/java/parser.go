@@ -94,11 +94,12 @@ func RenameRoute(oldname, newName string, fileTree *config.FileTree) {
     utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
     newCode := changeRouteInRoutesFile(oldname, newName, string(file))
     daos.WriteToFile([]byte(newCode), pathOfRoutes)
+    parseJavaPageFiles(oldname, newName, fileTree)
 
 }
 
 func parseJavaPageFiles(oldname, newname string, fileTree *config.FileTree) {
-    pathOfPages := fileTree.GetPageBackDir() + fileTree.GetTemplateDir()
+    pathOfPages := fileTree.ProjectAbsolutePath + fileTree.GetPageBackDir()
     daos.ParseFolders(".java", pathOfPages, func(content, filePath string){
         newCode := changeNameInJavaFile(oldname, newname, content)
         daos.WriteToFile([]byte(newCode), filePath)

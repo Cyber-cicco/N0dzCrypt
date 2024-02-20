@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"fmt"
 	"fr/nzc/service/mv"
 
 	"github.com/spf13/cobra"
@@ -31,7 +30,6 @@ It has to be one of the following :
 
     `,
     Run: func(cmd *cobra.Command, args []string) {
-        fmt.Printf("args: %v\n", args)
         mv.MovePage(args, fileType)
     },
 }
