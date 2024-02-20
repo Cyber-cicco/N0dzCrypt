@@ -2,7 +2,6 @@ package java
 
 import (
 	"context"
-	"fmt"
 	"fr/nzc/config"
 	"fr/nzc/daos"
 	"fr/nzc/utils"
@@ -22,12 +21,12 @@ func init(){
     javaParser.SetLanguage(javaLang)
 }
 
+
 func changeRouteInRoutesFile(oldName, newName, sourceCodeAsString string) string {
     newCode := []string{}
-    fmt.Println(sourceCodeAsString)
     sourceCode := []byte(sourceCodeAsString)
 	n, _ := sitter.ParseCtx(context.Background(), sourceCode, javaLang)
-	q, _ := sitter.NewQuery([]byte(Q_JAVA_FINAL), javaLang)
+	q, _ := sitter.NewQuery([]byte(Q_JAVA_STRING), javaLang)
 	qc := sitter.NewQueryCursor()
 	qc.Exec(q, n)
     lastIndex := 0
@@ -42,7 +41,7 @@ func changeRouteInRoutesFile(oldName, newName, sourceCodeAsString string) string
             name := c.Node.ChildByFieldName("name")
             contentAsString := stringLitteral.Content(sourceCode)
             if contentAsString == oldName {
-                newVarName := utils.GetNewAdressVarFromOldName(newName)
+                newVarName := utils.GetNewAdressVarFromName(newName)
                 idxStart := name.StartByte()
                 idxEnd := name.EndByte()
                 newCode = append(newCode, sourceCodeAsString[lastIndex:idxStart] + newVarName)
@@ -59,14 +58,49 @@ func changeRouteInRoutesFile(oldName, newName, sourceCodeAsString string) string
     return strings.Join(newCode, "")
 }
 
-func RenameRoute(oldname, newName string, fileTree *config.FileTree) {
-    pathOfRoutes := fileTree.ProjectAbsolutePath + fileTree.GetPageBackDir() + "Routes.java"
-    fmt.Println(pathOfRoutes)
-    file, err := os.ReadFile(pathOfRoutes)
-    fmt.Println(string(file))
-    utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
-    newCode := changeRouteInRoutesFile(oldname, newName, string(file))
-    fmt.Println(newCode)
-    daos.WriteToFile([]byte(newCode), pathOfRoutes)
+func changeNameInJavaFile(oldName, newName, sourceCodeAsString string) string {
+    newCode := []string{}
+    sourceCode := []byte(sourceCodeAsString)
+	n, _ := sitter.ParseCtx(context.Background(), sourceCode, javaLang)
+	q, _ := sitter.NewQuery([]byte(Q_JAVA_ROUTE), javaLang)
+	qc := sitter.NewQueryCursor()
+	qc.Exec(q, n)
+    lastIndex := 0
+    for {
+		m, ok := qc.NextMatch()
+		if !ok {
+			break
+		}
+        m = qc.FilterPredicates(m, sourceCode)
+        for _, c := range m.Captures {
+            name := c.Node
+            contentAsString := name.Content(sourceCode)
+            if utils.GetNewAdressVarFromName(oldName) == contentAsString {
+                newVarName := utils.GetNewAdressVarFromName(newName)
+                idxStart := name.StartByte()
+                idxEnd := name.EndByte()
+                newCode = append(newCode, sourceCodeAsString[lastIndex:idxStart] + newVarName)
+                lastIndex = int(idxEnd)
+            }
+        }
+    }
+    newCode = append(newCode, sourceCodeAsString[lastIndex:])
+    return strings.Join(newCode, "")
 }
 
+func RenameRoute(oldname, newName string, fileTree *config.FileTree) {
+    pathOfRoutes := fileTree.ProjectAbsolutePath + fileTree.GetPageBackDir() + "Routes.java"
+    file, err := os.ReadFile(pathOfRoutes)
+    utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
+    newCode := changeRouteInRoutesFile(oldname, newName, string(file))
+    daos.WriteToFile([]byte(newCode), pathOfRoutes)
+
+}
+
+func parseJavaPageFiles(oldname, newname string, fileTree *config.FileTree) {
+    pathOfPages := fileTree.GetPageBackDir() + fileTree.GetTemplateDir()
+    daos.ParseFolders(".java", pathOfPages, func(content, filePath string){
+        newCode := changeNameInJavaFile(oldname, newname, content)
+        daos.WriteToFile([]byte(newCode), filePath)
+    })
+}

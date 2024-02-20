@@ -101,7 +101,7 @@ func GetDirNameFromPackage(p string) string {
     return strings.ReplaceAll(p, ".", "/") + "/"
 }
 
-func GetNewAdressVarFromOldName(routeName string) string {
+func GetNewAdressVarFromName(routeName string) string {
     pageName := strings.Split(routeName, "/")
     return "ADR_" + GetUpperSnakeCaseFromDir(pageName[len(pageName) -1])
 }
