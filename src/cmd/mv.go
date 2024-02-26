@@ -14,12 +14,14 @@ var mvCmd = &cobra.Command{
 	Long: `
 Move or rename an element of your frontend n0dzcrypt app, updating any reference in your backend.
 By default, it takes two arguments : the relative path of the file you want to rename, and the relative path of the new name of the file.
-It will rename the file, and search for any reference in your front end fragments and the Routes.java file in your backend and update it accordingly.
+Without any flag, it will rename the file, and search for any reference in your front end fragments and the Routes.java file, will update the variable name of the Route in your backend and update all direct references accordingly. But if you change a name of a page, this won't update the url you get this fragment from.
+
 You can also pass an extra argument with the --type or -t flag. This will enforce some behaviours, and will now take paths relative to the folder you have defined in n0dzcrypt.json for the type of file you're moving.
+
 It has to be one of the following :
     - comp : components of your application, aka thymeleaf fragments used globally in your application. Cannot be referenced in your backend routes, so it won't update the Routes.java file
-    - page : page of your application, aka a standalone thymeleaf fragment that is not referenced anywhere else in your front end fragments. Can be referenced in your backend routes. That way, it won't update any reference in your front-end file, but will update the Routes.java
-    - frag : fragment of a page of your application, aka a thymeleaf fragment that is only referenced in your pageor by other fragments of your page. Will update every reference in your page folder and Routes.java 
+    - page : page of your application, aka a standalone thymeleaf fragment that is not referenced anywhere else in your front end fragments. Can be referenced in your backend routes. That way, it will not only update the route, but also the path of the controller, any reference in "hx-" ajax call and hx-push-url, and also the "href" of the "<a>" tags of your project. If you change the directory of the page, it will also displace every any fragments related to it.
+    - frag : fragment of a page of your application, aka a thymeleaf fragment that is only referenced in your page or by other fragments of your page. Will update every reference in your page folder and Routes.java 
     - layout : layout of your app, usually containing the headers and components that will not change when navigating from one page to another. Will update the Routes.java
     - tstyle : a css file in your templates folder that is meant to be included inline in one or more fragments of your application. Will update any file in your templates folder
     - tscript : a javascript file in your templates folder that is meant to be included inline in one or more fragments of your application. Will update any file in your templates folder

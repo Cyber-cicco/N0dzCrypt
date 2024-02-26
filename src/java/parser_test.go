@@ -69,3 +69,50 @@ public class HomeController {
     newContent := changeNameInJavaFile(oldname, newname, sourceCode)
     fmt.Println(newContent)
 }
+
+func TestChangeControllerAdress(t *testing.T) {
+    sourceCode := `
+package test.page;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequiredArgsConstructor
+@RequestMapping(value = "/home", test="/caca")
+public class HomeController {
+
+    @GetMapping
+    public String getHome(Model model) {
+        model.addAttribute("routerOutlet", Routes.ADR_HOME);
+        return Routes.ADR_BASE_LAYOUT;
+    }
+
+    @GetMapping("/partial")
+    public String getHomePart(Model model) {
+        return Routes.ADR_ABOUT;
+    }
+
+    @GetMapping(value = "/profile/{id}", testValue = "testString")
+    public String getHome(Model model) {
+        model.addAttribute("routerOutlet", Routes.ADR_HOME);
+        return Routes.ADR_BASE_LAYOUT;
+    }
+
+    @GetMapping("/profile/partial/{id}")
+    public String getHomePart(Model model) {
+        return Routes.ADR_ABOUT;
+    }
+
+    @PostMapping("/profile")
+    public String getHomePart(Model model) {
+        return Routes.ADR_ABOUT;
+    }
+}
+    ` 
+    newCode := changeControllerAdress("page/home", "page/accueil", sourceCode)
+    fmt.Printf("newCode: %v\n", newCode)
+}

@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"math/rand"
 	"regexp"
 	"strings"
@@ -128,4 +129,13 @@ func StripPathFromDirectoryReference(path string) string {
         newFiles = append(newFiles, f)
     }
     return strings.Join(newFiles, "/")
+}
+
+func StripPage(oldname string) string {
+    paths := strings.Split(oldname, "/")
+    if (len(paths) < 2) {
+        HandleTechnicalError(errors.New("String format souldn't be possible"), "")
+    }
+    return strings.Join(paths[1:], "/")
+
 }

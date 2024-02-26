@@ -1,25 +1,45 @@
 package thymeleaf
 
-var Q_TH_ATTRIBUTE = `(
+const Q_TH_ATTRIBUTE = `(
 (attribute_name) @tag
 (#match? @tag "th:*")
 )`
-var Q_TH_REPLACE = `(
+const Q_TH_REPLACE = `(
 (attribute_name) @tag
 (#eq? @tag "th:replace")
 )`
-var Q_TH_REPLACE_INSERT = `(
-(attribute_name) @caca
-(#any-of @caca
+const Q_TH_REPLACE_INSERT = `(
+(attribute_name) @var
+(#any-of @var
     "th:insert"
     "th:replace"
 )
 )`
-var Q_TH_INSERT = `(
+const Q_TH_INSERT = `(
 (attribute_name) @tag
 (#eq? @tag "th:insert")
 )`
 
-var Q_ATTRIBUTE_VALUE = `
+const Q_ATTRIBUTE_VALUE = `
 (quoted_attribute_value) @tag
 `
+const Q_ATTRIBUTE_HX = `(
+(attribute_name) @tag
+)`
+
+var pageTags = []string{
+    "hx-get",
+    "hx-post",
+    "hx-put",
+    "hx-patch",
+    "hx-delete",
+    "hx-push-url",
+    "href",
+    "th:hx-get",
+    "th:hx-post",
+    "th:hx-put",
+    "th:hx-patch",
+    "th:hx-delete",
+    "th:href",
+    "th:hx-push-url",
+}

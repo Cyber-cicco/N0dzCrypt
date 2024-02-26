@@ -10,6 +10,7 @@ import (
 	"fr/nzc/utils"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 func MovePage(args []string, flag string) {
@@ -78,9 +79,27 @@ func handleBaseCase(oldName, newName string, fileTree *config.FileTree) {
 
 func writeNecessaryDir(oldname, newname string, fileTree *config.FileTree) {
     newDirName := utils.GetDirectoryFromPath(newname)
-    fmt.Println(newDirName)
     err := os.MkdirAll(newDirName, os.ModePerm)
     if err != nil {
         fmt.Println("Couldn't create the necessary directories")
     }
+}
+
+func handlePageCase(oldname, newname string, fileTree *config.FileTree) {
+    if strings.Contains(oldname, "../") || strings.Contains(newname, "../") {
+        utils.HandleUsageError(errors.New("Unsupported directory adress"), "Error : you can not include relative paths when using a flag")
+    }
+    oldname = fileTree.GetPageFrontDir() + oldname
+    newname = fileTree.GetPageFrontDir() + newname
+    file, err := os.ReadFile(oldname)
+    utils.HandleUsageError(err, config.ERR_FILE_DOES_NOT_EXIST)
+    if daos.FileExists(newname) {
+        utils.HandleUsageError(errors.New("Can't move file"), config.ERR_MOVING_FILE)
+    }
+    writeNecessaryDir(oldname, newname, fileTree)
+    oldname = fileTree.GetFragmentReference(oldname)
+    newname = fileTree.GetFragmentReference(newname)
+    daos.WriteToFile(file, newname)
+    os.Remove(oldname)
+    thymeleaf.ReplacePageReferences(oldname, newname, fileTree)
 }
