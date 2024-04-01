@@ -98,52 +98,55 @@ type JavaTest struct {
 
 
 func (f FileTree) GetRepositoryDir() string{
-    return "./" + f.JavaBack.RootDir  + f.JavaBack.Repository
+    return "./" + f.GetRootOfJavaProject()  + f.JavaBack.Repository
 }
 func (f FileTree) GetServiceDir() string{
-    return "./" + f.JavaBack.RootDir + f.JavaBack.Service
+    return "./" + f.GetRootOfJavaProject() + f.JavaBack.Service
 }
 func (f FileTree) GetValidatorDir() string{
-    return "./" + f.JavaBack.RootDir + f.JavaBack.Validators
+    return "./" + f.GetRootOfJavaProject() + f.JavaBack.Validators
 }
 func (f FileTree) GetJavaDir() string{
-    return "./" + f.JavaBack.RootDir 
+    return "./" + f.GetRootOfJavaProject() 
 }
 func (f FileTree) GetPageBackDir() string{
-    return "./" + f.JavaBack.RootDir + f.JavaBack.PagesDir.RootDir
+    return "./" + f.GetRootOfJavaProject() + f.JavaBack.PagesDir.RootDir
 }
-func (f FileTree) GetIrrigatorDir() string{
-    return "./" + f.JavaBack.RootDir + f.JavaBack.PagesDir.RootDir + f.JavaBack.PagesDir.Irrigator
+func (f *FileTree) GetRootOfJavaProject() string {
+    return f.JavaBack.RootDir + strings.ReplaceAll(f.JavaBack.BasePackage, ".", "/") + "/" 
+}
+func (f FileTree) GetIrrigatorDir() string {
+    return "./" + f.GetRootOfJavaProject() + f.JavaBack.PagesDir.RootDir + f.JavaBack.PagesDir.Irrigator
 }
 func (f FileTree) GetJsonMapperDir() string{
-    return "./" + f.JavaBack.RootDir + f.JavaBack.Json.RootDir + f.JavaBack.Json.Mapper
+    return "./" + f.GetRootOfJavaProject() + f.JavaBack.Json.RootDir + f.JavaBack.Json.Mapper
 }
 func (f FileTree) GetJsonDtoDir() string{
-    return "./" + f.JavaBack.RootDir + f.JavaBack.Json.RootDir + f.JavaBack.Json.Dto
+    return "./" + f.GetRootOfJavaProject() + f.JavaBack.Json.RootDir + f.JavaBack.Json.Dto
 }
 func (f FileTree) GetJsonDir() string{
-    return "./" + f.JavaBack.RootDir + f.JavaBack.Json.RootDir
+    return "./" + f.GetRootOfJavaProject() + f.JavaBack.Json.RootDir
 }
 func (f FileTree) GetEntityDir() string{
-    return "./" + f.JavaBack.RootDir + f.JavaBack.Entities.RootDir
+    return "./" + f.GetRootOfJavaProject() + f.JavaBack.Entities.RootDir
 }
 func (f FileTree) GetEntityEnumDir() string{
-    return "./" + f.JavaBack.RootDir + f.JavaBack.Entities.RootDir + f.JavaBack.Entities.Enum
+    return "./" + f.GetRootOfJavaProject() + f.JavaBack.Entities.RootDir + f.JavaBack.Entities.Enum
 }
 func (f FileTree) GetSecurityDir() string{
-    return "./" + f.JavaBack.RootDir + f.JavaBack.Security.RootDir
+    return "./" + f.GetRootOfJavaProject() + f.JavaBack.Security.RootDir
 }
 func (f FileTree) GetSecurityConfigDir() string{
-    return "./" + f.JavaBack.RootDir + f.JavaBack.Security.RootDir + f.JavaBack.Security.Config
+    return "./" + f.GetRootOfJavaProject() + f.JavaBack.Security.RootDir + f.JavaBack.Security.Config
 }
 func (f FileTree) GetSecurityServiceDir() string{
-    return "./" + f.JavaBack.RootDir + f.JavaBack.Security.RootDir + f.JavaBack.Security.Service
+    return "./" + f.GetRootOfJavaProject() + f.JavaBack.Security.RootDir + f.JavaBack.Security.Service
 }
 func (f FileTree) GetUtilsDir() string{
-    return "./" + f.JavaBack.RootDir + f.JavaBack.Utils.RootDir
+    return "./" + f.GetRootOfJavaProject() + f.JavaBack.Utils.RootDir
 }
 func (f FileTree) GetHXDir() string{
-    return "./" + f.JavaBack.RootDir + f.JavaBack.Utils.RootDir + f.JavaBack.Utils.HX
+    return "./" + f.GetRootOfJavaProject() + f.JavaBack.Utils.RootDir + f.JavaBack.Utils.HX
 }
 func (f FileTree) GetResourcesDir() string{
     return "./" + f.Resources.RootDir 
@@ -218,7 +221,7 @@ type Route struct {
 }
 
 func CreateConfig(mainPackage string) *FileTree {
-    javaDir := "src/main/java/" + utils.GetDirNameFromPackage(mainPackage)
+    javaDir := "src/main/java/"
 
     fileTree := &FileTree{
         JavaBack: JavaBack{

@@ -8,8 +8,8 @@ import (
 	"os"
 	"strings"
 
-	sitter "github.com/smacker/go-tree-sitter"
-	"github.com/smacker/go-tree-sitter/java"
+	sitter "github.com/Cyber-cicco/go-tree-sitter"
+	"github.com/Cyber-cicco/go-tree-sitter/java"
 )
 
 var javaParser *sitter.Parser
@@ -108,7 +108,7 @@ func changeControllerAdress(oldname, newname, sourceCodeAsString string) string 
         for _, c := range m.Captures {
             annotation := c.Node.Parent()
             argument := annotation.ChildByFieldName("arguments")
-            annoation_name := annotation.Child(1).Content(sourceCode)
+            annotation_name := annotation.Child(1).Content(sourceCode)
             for i := 0; i <  int(argument.ChildCount()); i++ {
                 currArg := argument.Child(i)
                 argType := currArg.Type()
@@ -133,7 +133,7 @@ func changeControllerAdress(oldname, newname, sourceCodeAsString string) string 
                     }
                 }
             }
-            if annoation_name == "RequestMapping" {
+            if annotation_name == "RequestMapping" {
             }
         }
     }
@@ -147,10 +147,9 @@ func RenameRoute(oldname, newName string, fileTree *config.FileTree) {
     utils.HandleTechnicalError(err, config.ERR_TEMPLATE_FILE_READ)
     newCode := changeRouteInRoutesFile(oldname, newName, string(file))
     daos.WriteToFile([]byte(newCode), pathOfRoutes)
-    parseJavaPageFiles(oldname, newName, fileTree)
 }
 
-func parseJavaPageFiles(oldname, newname string, fileTree *config.FileTree) {
+func ParseJavaPageFiles(oldname, newname string, fileTree *config.FileTree) {
     pathOfPages := fileTree.ProjectAbsolutePath + fileTree.GetPageBackDir()
     daos.ParseFolders(".java", pathOfPages, func(content, filePath string){
         newCode := changeNameInJavaFile(oldname, newname, content)
@@ -159,5 +158,9 @@ func parseJavaPageFiles(oldname, newname string, fileTree *config.FileTree) {
 }
 
 func ChangeBackendPageReferences(oldname, newname string, fileTree *config.FileTree) {
-    
+    pathOfPages := fileTree.ProjectAbsolutePath + fileTree.GetPageBackDir()
+    daos.ParseFolders(".java", pathOfPages, func(content, filePath string){
+        newCode := changeControllerAdress(oldname, newname, content)
+        daos.WriteToFile([]byte(newCode), filePath)
+    })
 }

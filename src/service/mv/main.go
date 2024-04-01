@@ -75,6 +75,7 @@ func handleBaseCase(oldName, newName string, fileTree *config.FileTree) {
     newName = fileTree.GetFragmentReference(newName)
     thymeleaf.RenameProjectFiles(oldName, newName, fileTree)
     java.RenameRoute(oldName, newName, fileTree)
+    java.ParseJavaPageFiles(oldName, newName, fileTree)
 }
 
 func writeNecessaryDir(oldname, newname string, fileTree *config.FileTree) {
@@ -102,4 +103,6 @@ func handlePageCase(oldname, newname string, fileTree *config.FileTree) {
     daos.WriteToFile(file, newname)
     os.Remove(oldname)
     thymeleaf.ReplacePageReferences(oldname, newname, fileTree)
+    java.RenameRoute(oldname, newname, fileTree)
+    java.ChangeBackendPageReferences(oldname, newname, fileTree)
 }

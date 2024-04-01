@@ -1,3 +1,5 @@
+github.com/Cyber-cicco/go-tree-sitter v0.1.0 h1:nasw21zz/stVUgiq7Yo+2t0/OoTNQ1HDsivbjnycMCs=
+github.com/Cyber-cicco/go-tree-sitter v0.1.0/go.mod h1:6YQzB7JUfy3ObvBBDCpT8s3qgTSZ3QFt+M/w6/jWPQY=
 github.com/DATA-DOG/go-sqlmock v1.3.3 h1:CWUqKXe0s8A2z6qCgkP4Kru7wC11YoAnoupUKFDnH08=
 github.com/DATA-DOG/go-sqlmock v1.3.3/go.mod h1:f/Ixk793poVmq4qj/V1dPUg2JEAKC73Q5eFN3EC/SaM=
 github.com/IMQS/options v1.0.2 h1:lzMOWkwhYQeld+KIp6NoeHLrLvqvzOorMeq6QNhLEKg=

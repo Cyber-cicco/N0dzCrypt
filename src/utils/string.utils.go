@@ -137,5 +137,4 @@ func StripPage(oldname string) string {
         HandleTechnicalError(errors.New("String format souldn't be possible"), "")
     }
     return strings.Join(paths[1:], "/")
-
 }

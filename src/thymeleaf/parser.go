@@ -8,8 +8,8 @@ import (
 	"slices"
 	"strings"
 
-	sitter "github.com/smacker/go-tree-sitter"
-	"github.com/smacker/go-tree-sitter/html"
+	sitter "github.com/Cyber-cicco/go-tree-sitter"
+	"github.com/Cyber-cicco/go-tree-sitter/html"
 )
 
 var htmlParser *sitter.Parser
